@@ -1,17 +1,30 @@
-package com.awsickapps.uno;
+package com.awsickapps.uno.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.awsickapps.uno.R;
 
-public class MenuActivity extends ActionBarActivity {
+public class MenuActivity extends ActionBarActivity implements View.OnClickListener{
+
+    Button bPlay, bOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        bOptions = (Button) findViewById(R.id.bOptions);
+        bPlay = (Button) findViewById(R.id.bPlay);
+        bOptions.setOnClickListener(this);
+        bPlay.setOnClickListener(this);
+
     }
 
 
@@ -35,5 +48,23 @@ public class MenuActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.bOptions:
+                this.startActivity(this, OptionsActivity.class);
+                break;
+            case R.id.bPlay:
+                this.startActivity(this, PlayActivity.class);
+                break;
+        }
+    }
+
+    private void startActivity(Context context, Class c){
+        Intent i = new Intent(context, c);
+        startActivity(i);
     }
 }

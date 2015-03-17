@@ -24,10 +24,14 @@ public class Pile {
     public Card drawCard(){
         if(isDraw){
             size--;
-            return cards.get(size);
+            return cards.remove(size);
         }else{
             throw new RuntimeException("Cannot draw from discard pile");
         }
+    }
+
+    public void shuffle(){
+        Collections.shuffle(cards);
     }
 
     private void createDeck(){

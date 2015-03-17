@@ -24,8 +24,8 @@ public class Card {
 
     public Card(int number,@NonNull Color color){
 
-        if(number > 14 || number < 1)
-            throw new RuntimeException("Invalid card number(" + number + ") must be between 1-14 inclusive.");
+        if(number > 14 || number < 0)
+            throw new RuntimeException("Invalid card number(" + number + ") must be between 0-14 inclusive.");
 
         this.number = number;
         this.color = color;

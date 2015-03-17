@@ -2,6 +2,7 @@ package com.awsickapps.uno.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by allen on 3/15/15.
@@ -22,13 +23,17 @@ public class Pile {
 
     public Card drawCard(){
         if(isDraw){
-            return null;
+            size--;
+            return cards.get(size);
         }else{
             throw new RuntimeException("Cannot draw from discard pile");
         }
     }
 
     private void createDeck(){
+
+        size = 108;
+
         cards.add(new Card(0, Card.Color.blue));
         cards.add(new Card(0, Card.Color.red));
         cards.add(new Card(0, Card.Color.green));
@@ -142,23 +147,17 @@ public class Pile {
         cards.add(new Card(12, Card.Color.red));
         cards.add(new Card(12, Card.Color.red));
 
-        cards.add(new Card(13, Card.Color.yellow));
-        cards.add(new Card(13, Card.Color.yellow));
-        cards.add(new Card(13, Card.Color.green));
-        cards.add(new Card(13, Card.Color.green));
-        cards.add(new Card(13, Card.Color.blue));
-        cards.add(new Card(13, Card.Color.blue));
-        cards.add(new Card(13, Card.Color.red));
-        cards.add(new Card(13, Card.Color.red));
+        cards.add(new Card(13, Card.Color.wild));
+        cards.add(new Card(13, Card.Color.wild));
+        cards.add(new Card(13, Card.Color.wild));
+        cards.add(new Card(13, Card.Color.wild));
 
-        cards.add(new Card(14, Card.Color.yellow));
-        cards.add(new Card(14, Card.Color.yellow));
-        cards.add(new Card(14, Card.Color.green));
-        cards.add(new Card(14, Card.Color.green));
-        cards.add(new Card(14, Card.Color.blue));
-        cards.add(new Card(14, Card.Color.blue));
-        cards.add(new Card(14, Card.Color.red));
-        cards.add(new Card(14, Card.Color.red));
+        cards.add(new Card(14, Card.Color.wild));
+        cards.add(new Card(14, Card.Color.wild));
+        cards.add(new Card(14, Card.Color.wild));
+        cards.add(new Card(14, Card.Color.wild));
+
+        Collections.shuffle(cards);
     }
 
 }

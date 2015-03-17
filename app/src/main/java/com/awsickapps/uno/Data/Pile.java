@@ -1,5 +1,6 @@
 package com.awsickapps.uno.data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -7,38 +8,16 @@ import java.util.Arrays;
  */
 public class Pile {
 
-    int[] reds, blues, greens, yellows, wilds;
+    ArrayList<Card> cards;
     int size;
     boolean isDraw;
 
     public Pile(boolean isDraw){
 
         this.isDraw = isDraw;
-        reds = new int[13];
-        blues = new int[13];
-        greens = new int[13];
-        yellows = new int[13];
-        wilds = new int[2]; /* 0 : wild, 1 : wild draw 4 */
-
-        if(isDraw){
-
-            for(int i = 0; i < 9; i++){
-                reds[i] = 2;
-                blues[i] = 2;
-                greens[i] = 2;
-                yellows[i] = 2;
-            }
-
-            wilds[0] = wilds[1] = 4;
-
-        //isDiscard
-        }else{
-            Arrays.fill(reds, 0);
-            Arrays.fill(blues, 0);
-            Arrays.fill(greens, 0);
-            Arrays.fill(yellows, 0);
-            Arrays.fill(wilds, 0);
-        }
+        cards = new ArrayList<>();
+        if(isDraw)
+            createDeck();
     }
 
     public Card drawCard(){
@@ -47,6 +26,139 @@ public class Pile {
         }else{
             throw new RuntimeException("Cannot draw from discard pile");
         }
+    }
+
+    private void createDeck(){
+        cards.add(new Card(0, Card.Color.blue));
+        cards.add(new Card(0, Card.Color.red));
+        cards.add(new Card(0, Card.Color.green));
+        cards.add(new Card(0, Card.Color.yellow));
+
+        cards.add(new Card(1, Card.Color.yellow));
+        cards.add(new Card(1, Card.Color.yellow));
+        cards.add(new Card(1, Card.Color.green));
+        cards.add(new Card(1, Card.Color.green));
+        cards.add(new Card(1, Card.Color.blue));
+        cards.add(new Card(1, Card.Color.blue));
+        cards.add(new Card(1, Card.Color.red));
+        cards.add(new Card(1, Card.Color.red));
+
+        cards.add(new Card(2, Card.Color.yellow));
+        cards.add(new Card(2, Card.Color.yellow));
+        cards.add(new Card(2, Card.Color.green));
+        cards.add(new Card(2, Card.Color.green));
+        cards.add(new Card(2, Card.Color.blue));
+        cards.add(new Card(2, Card.Color.blue));
+        cards.add(new Card(2, Card.Color.red));
+        cards.add(new Card(2, Card.Color.red));
+
+        cards.add(new Card(3, Card.Color.yellow));
+        cards.add(new Card(3, Card.Color.yellow));
+        cards.add(new Card(3, Card.Color.green));
+        cards.add(new Card(3, Card.Color.green));
+        cards.add(new Card(3, Card.Color.blue));
+        cards.add(new Card(3, Card.Color.blue));
+        cards.add(new Card(3, Card.Color.red));
+        cards.add(new Card(3, Card.Color.red));
+
+        cards.add(new Card(4, Card.Color.yellow));
+        cards.add(new Card(4, Card.Color.yellow));
+        cards.add(new Card(4, Card.Color.green));
+        cards.add(new Card(4, Card.Color.green));
+        cards.add(new Card(4, Card.Color.blue));
+        cards.add(new Card(4, Card.Color.blue));
+        cards.add(new Card(4, Card.Color.red));
+        cards.add(new Card(4, Card.Color.red));
+
+        cards.add(new Card(5, Card.Color.yellow));
+        cards.add(new Card(5, Card.Color.yellow));
+        cards.add(new Card(5, Card.Color.green));
+        cards.add(new Card(5, Card.Color.green));
+        cards.add(new Card(5, Card.Color.blue));
+        cards.add(new Card(5, Card.Color.blue));
+        cards.add(new Card(5, Card.Color.red));
+        cards.add(new Card(5, Card.Color.red));
+
+        cards.add(new Card(6, Card.Color.yellow));
+        cards.add(new Card(6, Card.Color.yellow));
+        cards.add(new Card(6, Card.Color.green));
+        cards.add(new Card(6, Card.Color.green));
+        cards.add(new Card(6, Card.Color.blue));
+        cards.add(new Card(6, Card.Color.blue));
+        cards.add(new Card(6, Card.Color.red));
+        cards.add(new Card(6, Card.Color.red));
+
+        cards.add(new Card(7, Card.Color.yellow));
+        cards.add(new Card(7, Card.Color.yellow));
+        cards.add(new Card(7, Card.Color.green));
+        cards.add(new Card(7, Card.Color.green));
+        cards.add(new Card(7, Card.Color.blue));
+        cards.add(new Card(7, Card.Color.blue));
+        cards.add(new Card(7, Card.Color.red));
+        cards.add(new Card(7, Card.Color.red));
+
+        cards.add(new Card(8, Card.Color.yellow));
+        cards.add(new Card(8, Card.Color.yellow));
+        cards.add(new Card(8, Card.Color.green));
+        cards.add(new Card(8, Card.Color.green));
+        cards.add(new Card(8, Card.Color.blue));
+        cards.add(new Card(8, Card.Color.blue));
+        cards.add(new Card(8, Card.Color.red));
+        cards.add(new Card(8, Card.Color.red));
+
+        cards.add(new Card(9, Card.Color.yellow));
+        cards.add(new Card(9, Card.Color.yellow));
+        cards.add(new Card(9, Card.Color.green));
+        cards.add(new Card(9, Card.Color.green));
+        cards.add(new Card(9, Card.Color.blue));
+        cards.add(new Card(9, Card.Color.blue));
+        cards.add(new Card(9, Card.Color.red));
+        cards.add(new Card(9, Card.Color.red));
+
+        cards.add(new Card(10, Card.Color.yellow));
+        cards.add(new Card(10, Card.Color.yellow));
+        cards.add(new Card(10, Card.Color.green));
+        cards.add(new Card(10, Card.Color.green));
+        cards.add(new Card(10, Card.Color.blue));
+        cards.add(new Card(10, Card.Color.blue));
+        cards.add(new Card(10, Card.Color.red));
+        cards.add(new Card(10, Card.Color.red));
+
+        cards.add(new Card(11, Card.Color.yellow));
+        cards.add(new Card(11, Card.Color.yellow));
+        cards.add(new Card(11, Card.Color.green));
+        cards.add(new Card(11, Card.Color.green));
+        cards.add(new Card(11, Card.Color.blue));
+        cards.add(new Card(11, Card.Color.blue));
+        cards.add(new Card(11, Card.Color.red));
+        cards.add(new Card(11, Card.Color.red));
+
+        cards.add(new Card(12, Card.Color.yellow));
+        cards.add(new Card(12, Card.Color.yellow));
+        cards.add(new Card(12, Card.Color.green));
+        cards.add(new Card(12, Card.Color.green));
+        cards.add(new Card(12, Card.Color.blue));
+        cards.add(new Card(12, Card.Color.blue));
+        cards.add(new Card(12, Card.Color.red));
+        cards.add(new Card(12, Card.Color.red));
+
+        cards.add(new Card(13, Card.Color.yellow));
+        cards.add(new Card(13, Card.Color.yellow));
+        cards.add(new Card(13, Card.Color.green));
+        cards.add(new Card(13, Card.Color.green));
+        cards.add(new Card(13, Card.Color.blue));
+        cards.add(new Card(13, Card.Color.blue));
+        cards.add(new Card(13, Card.Color.red));
+        cards.add(new Card(13, Card.Color.red));
+
+        cards.add(new Card(14, Card.Color.yellow));
+        cards.add(new Card(14, Card.Color.yellow));
+        cards.add(new Card(14, Card.Color.green));
+        cards.add(new Card(14, Card.Color.green));
+        cards.add(new Card(14, Card.Color.blue));
+        cards.add(new Card(14, Card.Color.blue));
+        cards.add(new Card(14, Card.Color.red));
+        cards.add(new Card(14, Card.Color.red));
     }
 
 }

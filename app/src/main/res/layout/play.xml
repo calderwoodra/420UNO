@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#3f8900"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!-- Game Board -->
+    <RelativeLayout
+        android:padding="@dimen/general_padding"
+        android:layout_weight="8"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <!-- draw/discard-->
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:padding="@dimen/general_padding"
+                android:id="@+id/draw"
+                android:src="@drawable/uno_back"
+                android:layout_width="@dimen/card_width"
+                android:layout_height="@dimen/card_height" />
+
+            <ImageView
+                android:padding="@dimen/general_padding"
+                android:id="@+id/discard"
+                android:visibility="invisible"
+                android:src="@drawable/uno_back"
+                android:layout_width="@dimen/card_width"
+                android:layout_height="@dimen/card_height" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/flBottom"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <FrameLayout
+            android:id="@+id/flLeft"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <FrameLayout
+            android:id="@+id/flRight"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <FrameLayout
+            android:id="@+id/flTop"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <!-- scores/history -->
+    <LinearLayout
+        android:background="#dddddd"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
 
 
-
-</RelativeLayout>
+</LinearLayout>

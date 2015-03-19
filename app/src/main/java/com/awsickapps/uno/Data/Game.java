@@ -1,9 +1,10 @@
 package com.awsickapps.uno.data;
 
-import com.awsickapps.uno.PlayerHandsAdapter;
+import android.widget.Toast;
+
+import com.awsickapps.uno.activities.PlayActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by allen on 3/15/15.
@@ -14,11 +15,14 @@ public class Game {
     public ArrayList<Player> players;
     public Player currentPlayer;
 
+
     boolean isCCW = false;
-    int numberOfPlayers = 4;
+    int numberOfPlayers, playerIndex;
+    private PlayActivity activity;
 
-    public Game(String name){
+    public Game(String name, PlayActivity activity){
 
+        this.activity = activity;
         draw = new Pile(true);
         discard = new Pile(false);
         players = new ArrayList<>();
@@ -26,7 +30,9 @@ public class Game {
         players.add(new Player("AI 1"));
         players.add(new Player("AI 2"));
         players.add(new Player("AI 3"));
-        currentPlayer = players.get(0);
+        numberOfPlayers = players.size();
+        playerIndex = 0;
+        currentPlayer = players.get(playerIndex);
         topToDiscard();
     }
 
@@ -36,12 +42,22 @@ public class Game {
 
     public void discardCard(Card card){
         discard.add(card);
+        if(isCCW)
+            playerIndex--;
+        else
+            playerIndex++;
+
+        currentPlayer = players.get(playerIndex%numberOfPlayers);
+        activity.endTurn();
     }
 
     public void refillDrawPile(){
+        Toast.makeText(activity, "**************reshuffle applied!********", Toast.LENGTH_LONG).show();
         draw = discard;
+        draw.isDraw = true;
         discard = new Pile(false);
-        discard.add(draw.cards.remove(0));
+        discard.add(draw.cards.remove(0));  //Done so that the card on top of the discard pile remains
+        draw.size--;                        //because of the remove operation happening above.
         draw.shuffle();
     }
 

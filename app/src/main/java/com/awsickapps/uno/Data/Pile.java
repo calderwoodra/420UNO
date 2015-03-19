@@ -49,8 +49,6 @@ public class Pile {
 
     private void createDeck(){
 
-        size = 108;
-
         cards.add(new Card(0, Card.Color.blue));
         cards.add(new Card(0, Card.Color.red));
         cards.add(new Card(0, Card.Color.green));
@@ -92,7 +90,7 @@ public class Pile {
         cards.add(new Card(4, Card.Color.red));
         cards.add(new Card(4, Card.Color.red));
 
-        cards.add(new Card(5, Card.Color.yellow));
+        /*cards.add(new Card(5, Card.Color.yellow));
         cards.add(new Card(5, Card.Color.yellow));
         cards.add(new Card(5, Card.Color.green));
         cards.add(new Card(5, Card.Color.green));
@@ -172,8 +170,9 @@ public class Pile {
         cards.add(new Card(14, Card.Color.wild));
         cards.add(new Card(14, Card.Color.wild));
         cards.add(new Card(14, Card.Color.wild));
-        cards.add(new Card(14, Card.Color.wild));
+        cards.add(new Card(14, Card.Color.wild));*/
 
+        size = cards.size();
         Collections.shuffle(cards);
     }
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,8 +38,8 @@ public class PlayActivity extends Activity{
 
         rvLeft   = (RecyclerView) findViewById(R.id.left);
         rvRight  = (RecyclerView) findViewById(R.id.right);
-        rvBottom = (RecyclerView) findViewById(R.id.top);
-        rvTop    = (RecyclerView) findViewById(R.id.bottom);
+        rvBottom = (RecyclerView) findViewById(R.id.bottom);
+        rvTop    = (RecyclerView) findViewById(R.id.top);
         ivDraw   = (ImageView) findViewById(R.id.draw);
         ivDiscard= (ImageView) findViewById(R.id.discard);
 
@@ -50,7 +49,7 @@ public class PlayActivity extends Activity{
 
     //TODO: redo to accomidate 4+ players
     private void setupGame(){
-        game = new Game("Player 1");
+        game = new Game("Player 1", this);
         ivDiscard.setImageResource(game.discard.getTop().getImageResource());
         ivDiscard.setVisibility(View.VISIBLE);
 
@@ -59,11 +58,10 @@ public class PlayActivity extends Activity{
         topHand    = game.players.get(2).hand;
         rightHand  = game.players.get(3).hand;
 
-        bottomAdapter = new PlayerHandsAdapter(this, bottomHand);
-        leftAdapter = new PlayerHandsAdapter(this, leftHand);
-        rightAdapter = new PlayerHandsAdapter(this, rightHand);
-        topAdapter = new PlayerHandsAdapter(this, topHand);
-
+        bottomAdapter = new PlayerHandsAdapter(this, game.players.get(0), game);
+        leftAdapter   = new PlayerHandsAdapter(this, game.players.get(1), game);
+        topAdapter    = new PlayerHandsAdapter(this, game.players.get(2), game);
+        rightAdapter  = new PlayerHandsAdapter(this, game.players.get(3), game);
 
         adapterMap.put(game.players.get(0), bottomAdapter);
         adapterMap.put(game.players.get(1), leftAdapter);
@@ -79,7 +77,7 @@ public class PlayActivity extends Activity{
         rvBottom.setAdapter(bottomAdapter);
         rvBottom.setLayoutManager(new GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false));
 
-        for(int i =0; i < 1; i++){
+        for(int i =0; i < 7; i++){
             drawCard(bottomHand, bottomAdapter);
             drawCard(leftHand, leftAdapter);
             drawCard(rightHand, rightAdapter);
@@ -105,6 +103,7 @@ public class PlayActivity extends Activity{
                 ivDraw.setVisibility(View.INVISIBLE);
         }else{
             game.refillDrawPile();
+            ivDiscard.setVisibility(View.VISIBLE);
             drawCard(hand, adapter);
         }
     }
@@ -117,6 +116,12 @@ public class PlayActivity extends Activity{
         }
 
         return false;
+    }
+
+    public void endTurn(){
+        Card discardTop = game.discard.getTop();
+        ivDiscard.setImageResource(discardTop.getImageResource());
+        engageTurn(game.currentPlayer, discardTop);
     }
 
     @Override

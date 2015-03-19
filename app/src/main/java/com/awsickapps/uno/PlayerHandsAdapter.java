@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.awsickapps.uno.data.Card;
+import com.awsickapps.uno.data.Game;
+import com.awsickapps.uno.data.Player;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,10 +23,16 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
 
     LayoutInflater inflater;
     List<Card> cards = Collections.emptyList();
+    Game game;
+    Context context;
+    Player player;
 
-    public PlayerHandsAdapter(Context context, List<Card> cards){
+    public PlayerHandsAdapter(Context context, Player player, Game game){
         inflater = LayoutInflater.from(context);
-        this.cards = cards;
+        cards = player.hand;
+        this.game = game;
+        this.context = context;
+        this.player = player;
     }
 
     @Override
@@ -39,8 +48,26 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
     }
 
     @Override
-    public void onBindViewHolder(CardViewHolder cardViewHolder, int i) {
+    public void onBindViewHolder(CardViewHolder cardViewHolder, final int i) {
         cardViewHolder.ivCard.setImageResource(cards.get(i).getImageResource());
+        cardViewHolder.ivCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(player == game.currentPlayer)
+                    if(cards.get(i).canPlayOn(game.discard.getTop()))
+                        playCard(i);
+                    else
+                        Toast.makeText(context, "Card is not legal!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, "Not your turn!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void playCard(int i){
+        Toast.makeText(context, "Cards matched", Toast.LENGTH_SHORT).show();
+        game.discardCard(cards.remove(i));
+        this.notifyDataSetChanged();
     }
 
     public void setCards(List<Card> cards){
@@ -54,6 +81,7 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
         public CardViewHolder(View itemView) {
             super(itemView);
             ivCard = (ImageView) itemView.findViewById(R.id.ivCard);
+
         }
     }
 }

@@ -185,4 +185,8 @@ public class Card {
                 return 0;
         }
     }
+
+    public boolean canPlayOn(Card discard){
+        return (discard.color == this.color) || (discard.number == this.number) || (this.color == Color.wild);
+    }
 }

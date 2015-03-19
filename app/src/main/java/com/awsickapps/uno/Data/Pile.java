@@ -34,6 +34,19 @@ public class Pile {
         Collections.shuffle(cards);
     }
 
+    public Card getTop(){
+        return cards.get(size -1);
+    }
+
+    public boolean isEmpty(){
+        return cards.isEmpty();
+    }
+
+    public void add(Card card){
+        cards.add(card);
+        size++;
+    }
+
     private void createDeck(){
 
         size = 108;

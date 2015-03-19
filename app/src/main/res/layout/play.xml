@@ -66,6 +66,46 @@
             android:layout_width="@dimen/hand_width"
             android:layout_height="@dimen/card_height"/>
 
+        <Button
+            android:text="Red"
+            android:id="@+id/bRed"
+            android:visibility="invisible"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="Blue"
+            android:id="@+id/bBlue"
+            android:visibility="invisible"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="Green"
+            android:id="@+id/bGreen"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="Yello"
+            android:id="@+id/bYellow"
+            android:visibility="invisible"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content" />
+
 
     </RelativeLayout>
 

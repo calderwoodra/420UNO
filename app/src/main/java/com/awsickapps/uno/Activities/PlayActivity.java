@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.awsickapps.uno.PlayerHandsAdapter;
 import com.awsickapps.uno.R;
@@ -20,10 +22,25 @@ import java.util.List;
 /**
  * Created by allen on 3/15/15.
  */
-public class PlayActivity extends Activity{
+
+/*
+    TODO:
+        hide AI cards
+        build AI decisions
+        flesh out menu/options screens
+        create parallax cards in hands
+        create indicator for whose turn it is
+        onclick discard, create history overlay
+        add delays and transitions between card placements
+        create animation for shuffling the discard to the deck
+        create uno button
+        implement extra card features
+ */
+public class PlayActivity extends Activity implements View.OnClickListener{
 
     ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
     ImageView ivDraw, ivDiscard;
+    Button bGreen, bRed, bYellow, bBlue;
     RecyclerView rvLeft, rvRight, rvTop, rvBottom;
     PlayerHandsAdapter leftAdapter, rightAdapter, topAdapter, bottomAdapter;
     HashMap<Player, PlayerHandsAdapter> adapterMap;
@@ -42,6 +59,14 @@ public class PlayActivity extends Activity{
         rvTop    = (RecyclerView) findViewById(R.id.top);
         ivDraw   = (ImageView) findViewById(R.id.draw);
         ivDiscard= (ImageView) findViewById(R.id.discard);
+        bGreen = (Button) findViewById(R.id.bGreen);
+        bBlue = (Button) findViewById(R.id.bBlue);
+        bYellow = (Button) findViewById(R.id.bYellow);
+        bRed = (Button) findViewById(R.id.bRed);
+        bGreen.setOnClickListener(this);
+        bBlue.setOnClickListener(this);
+        bRed.setOnClickListener(this);
+        bYellow.setOnClickListener(this);
 
         setupGame();
         engageTurn(game.currentPlayer, game.discard.getTop());
@@ -103,7 +128,7 @@ public class PlayActivity extends Activity{
                 ivDraw.setVisibility(View.INVISIBLE);
         }else{
             game.refillDrawPile();
-            ivDiscard.setVisibility(View.VISIBLE);
+            ivDraw.setVisibility(View.VISIBLE);
             drawCard(hand, adapter);
         }
     }
@@ -124,9 +149,52 @@ public class PlayActivity extends Activity{
         engageTurn(game.currentPlayer, discardTop);
     }
 
+    public void pickColor(){
+        bRed.setVisibility(View.VISIBLE);
+        bBlue.setVisibility(View.VISIBLE);
+        bGreen.setVisibility(View.VISIBLE);
+        bYellow.setVisibility(View.VISIBLE);
+    }
+
+    public void endGame(Player player){
+        //TODO: Make this more glorious...
+        Toast.makeText(this, player.name + " has won!!!", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
         //TODO: display confirmation screen to leave the game.
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bBlue:
+                game.discard.getTop().setColor(Card.Color.blue);
+                colorChosen();
+                break;
+            case R.id.bYellow:
+                game.discard.getTop().setColor(Card.Color.yellow);
+                colorChosen();
+                break;
+            case R.id.bGreen:
+                game.discard.getTop().setColor(Card.Color.green);
+                colorChosen();
+                break;
+            case R.id.bRed :
+                game.discard.getTop().setColor(Card.Color.red);
+                colorChosen();
+                break;
+        }
+    }
+
+    private void colorChosen(){
+        bRed.setVisibility(View.INVISIBLE);
+        bBlue.setVisibility(View.INVISIBLE);
+        bGreen.setVisibility(View.INVISIBLE);
+        bYellow.setVisibility(View.INVISIBLE);
+        endTurn();
     }
 }

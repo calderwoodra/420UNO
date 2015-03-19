@@ -2,6 +2,7 @@ package com.awsickapps.uno.data;
 
 import android.widget.Toast;
 
+import com.awsickapps.uno.Data;
 import com.awsickapps.uno.activities.PlayActivity;
 
 import java.util.ArrayList;
@@ -36,19 +37,47 @@ public class Game {
         topToDiscard();
     }
 
-    public Card drawCard(){
-        return draw.drawCard();
-    }
-
     public void discardCard(Card card){
         discard.add(card);
+        boolean pickingColor = false;
+
+        switch (card.number){
+            case Data.REVERSE:
+                isCCW = !isCCW;
+                break;
+            case Data.DRAW_TWO:
+                draw(2);
+                break;
+            case Data.WILD_DRAW_FOUR:
+                activity.pickColor();
+                pickingColor = true;
+                break;
+            case Data.WILD:
+                activity.pickColor();
+                draw(4);
+                pickingColor = true;
+                break;
+            case Data.SKIP:
+                if(isCCW)
+                    playerIndex--;
+                else
+                    playerIndex++;
+                break;
+        }
+
         if(isCCW)
             playerIndex--;
         else
             playerIndex++;
 
-        currentPlayer = players.get(playerIndex%numberOfPlayers);
-        activity.endTurn();
+        currentPlayer = players.get(playerIndex % numberOfPlayers);
+
+        if(!pickingColor) {
+            if (!currentPlayer.hand.isEmpty())
+                activity.endTurn();
+            else
+                activity.endGame(currentPlayer);
+        }
     }
 
     public void refillDrawPile(){
@@ -56,18 +85,22 @@ public class Game {
         draw = discard;
         draw.isDraw = true;
         discard = new Pile(false);
-        discard.add(draw.cards.remove(0));  //Done so that the card on top of the discard pile remains
-        draw.size--;                        //because of the remove operation happening above.
+        discard.add(draw.drawCard());  //Done so that the card on top of the discard pile remains                        //because of the remove operation happening above.
         draw.shuffle();
     }
 
-    public boolean isCCW(){
-        return isCCW;
+    public void topToDiscard(){
+        do {
+
+            discard.add(draw.drawCard());
+
+        }while(discard.getTop().color == Card.Color.wild);
     }
 
-    public void topToDiscard(){
-        discard.add(draw.drawCard());
+    private void draw(int cards){
+
     }
+
 
 }
 

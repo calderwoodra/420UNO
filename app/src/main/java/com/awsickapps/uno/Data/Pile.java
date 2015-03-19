@@ -1,5 +1,7 @@
 package com.awsickapps.uno.data;
 
+import com.awsickapps.uno.Data;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -90,7 +92,7 @@ public class Pile {
         cards.add(new Card(4, Card.Color.red));
         cards.add(new Card(4, Card.Color.red));
 
-        /*cards.add(new Card(5, Card.Color.yellow));
+        cards.add(new Card(5, Card.Color.yellow));
         cards.add(new Card(5, Card.Color.yellow));
         cards.add(new Card(5, Card.Color.green));
         cards.add(new Card(5, Card.Color.green));
@@ -135,42 +137,42 @@ public class Pile {
         cards.add(new Card(9, Card.Color.red));
         cards.add(new Card(9, Card.Color.red));
 
-        cards.add(new Card(10, Card.Color.yellow));
-        cards.add(new Card(10, Card.Color.yellow));
-        cards.add(new Card(10, Card.Color.green));
-        cards.add(new Card(10, Card.Color.green));
-        cards.add(new Card(10, Card.Color.blue));
-        cards.add(new Card(10, Card.Color.blue));
-        cards.add(new Card(10, Card.Color.red));
-        cards.add(new Card(10, Card.Color.red));
+        cards.add(new Card(Data.SKIP, Card.Color.yellow));
+        cards.add(new Card(Data.SKIP, Card.Color.yellow));
+        cards.add(new Card(Data.SKIP, Card.Color.green));
+        cards.add(new Card(Data.SKIP, Card.Color.green));
+        cards.add(new Card(Data.SKIP, Card.Color.blue));
+        cards.add(new Card(Data.SKIP, Card.Color.blue));
+        cards.add(new Card(Data.SKIP, Card.Color.red));
+        cards.add(new Card(Data.SKIP, Card.Color.red));
 
-        cards.add(new Card(11, Card.Color.yellow));
-        cards.add(new Card(11, Card.Color.yellow));
-        cards.add(new Card(11, Card.Color.green));
-        cards.add(new Card(11, Card.Color.green));
-        cards.add(new Card(11, Card.Color.blue));
-        cards.add(new Card(11, Card.Color.blue));
-        cards.add(new Card(11, Card.Color.red));
-        cards.add(new Card(11, Card.Color.red));
+        cards.add(new Card(Data.REVERSE, Card.Color.yellow));
+        cards.add(new Card(Data.REVERSE, Card.Color.yellow));
+        cards.add(new Card(Data.REVERSE, Card.Color.green));
+        cards.add(new Card(Data.REVERSE, Card.Color.green));
+        cards.add(new Card(Data.REVERSE, Card.Color.blue));
+        cards.add(new Card(Data.REVERSE, Card.Color.blue));
+        cards.add(new Card(Data.REVERSE, Card.Color.red));
+        cards.add(new Card(Data.REVERSE, Card.Color.red));
 
-        cards.add(new Card(12, Card.Color.yellow));
-        cards.add(new Card(12, Card.Color.yellow));
-        cards.add(new Card(12, Card.Color.green));
-        cards.add(new Card(12, Card.Color.green));
-        cards.add(new Card(12, Card.Color.blue));
-        cards.add(new Card(12, Card.Color.blue));
-        cards.add(new Card(12, Card.Color.red));
-        cards.add(new Card(12, Card.Color.red));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.yellow));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.yellow));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.green));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.green));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.blue));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.blue));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.red));
+        cards.add(new Card(Data.DRAW_TWO, Card.Color.red));
 
-        cards.add(new Card(13, Card.Color.wild));
-        cards.add(new Card(13, Card.Color.wild));
-        cards.add(new Card(13, Card.Color.wild));
-        cards.add(new Card(13, Card.Color.wild));
+        cards.add(new Card(Data.WILD, Card.Color.wild));
+        cards.add(new Card(Data.WILD, Card.Color.wild));
+        cards.add(new Card(Data.WILD, Card.Color.wild));
+        cards.add(new Card(Data.WILD, Card.Color.wild));;
 
-        cards.add(new Card(14, Card.Color.wild));
-        cards.add(new Card(14, Card.Color.wild));
-        cards.add(new Card(14, Card.Color.wild));
-        cards.add(new Card(14, Card.Color.wild));*/
+        cards.add(new Card(Data.WILD_DRAW_FOUR, Card.Color.wild));
+        cards.add(new Card(Data.WILD_DRAW_FOUR, Card.Color.wild));
+        cards.add(new Card(Data.WILD_DRAW_FOUR, Card.Color.wild));
+        cards.add(new Card(Data.WILD_DRAW_FOUR, Card.Color.wild));
 
         size = cards.size();
         Collections.shuffle(cards);

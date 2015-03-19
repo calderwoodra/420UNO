@@ -2,6 +2,7 @@ package com.awsickapps.uno.data;
 
 import android.support.annotation.NonNull;
 
+import com.awsickapps.uno.Data;
 import com.awsickapps.uno.R;
 
 /**
@@ -9,7 +10,7 @@ import com.awsickapps.uno.R;
  */
 public class Card {
 
-    enum Color {red, blue, green, yellow, wild}
+    public enum Color {red, blue, green, yellow, wild}
     Color color;
     int number;
 
@@ -144,7 +145,7 @@ public class Card {
                     case yellow:
                         return R.drawable.yellow_9;
                 }
-            case 10:
+            case Data.SKIP:
                 switch (color){
                     case red:
                         return R.drawable.red_skip;
@@ -155,7 +156,7 @@ public class Card {
                     case yellow:
                         return R.drawable.yellow_skip;
                 }
-            case 11:
+            case Data.REVERSE:
                 switch (color){
                     case red:
                         return R.drawable.red_reverse;
@@ -166,7 +167,7 @@ public class Card {
                     case yellow:
                         return R.drawable.yellow_reverse;
                 }
-            case 12:
+            case Data.DRAW_TWO:
                 switch (color){
                     case red:
                         return R.drawable.red_add2;
@@ -177,9 +178,9 @@ public class Card {
                     case yellow:
                         return R.drawable.yellow_add2;
                 }
-            case 13:
+            case Data.WILD:
                 return R.drawable.wild_card;
-            case 14:
+            case Data.WILD_DRAW_FOUR:
                 return R.drawable.wild_take4;
             default:
                 return 0;
@@ -188,6 +189,13 @@ public class Card {
 
     public boolean canPlayOn(Card discard){
         return (discard.color == this.color) || (discard.number == this.number) ||
-                (this.color == Color.wild) || (discard.color == Color.wild);
+                (this.number >= 13);
+    }
+
+    public void setColor(Color color){
+        if(number == Data.WILD || number == Data.WILD_DRAW_FOUR)
+            this.color = color;
+        else
+            throw new RuntimeException("Cannot change the color of that card!");
     }
 }

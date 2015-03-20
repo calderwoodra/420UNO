@@ -197,4 +197,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         bYellow.setVisibility(View.INVISIBLE);
         endTurn();
     }
+
+    public void drawExtra(Player player, int draw){
+        for (int i = 0; i < draw; i++)
+            drawCard(player.hand, adapterMap.get(player));
+
+    }
 }

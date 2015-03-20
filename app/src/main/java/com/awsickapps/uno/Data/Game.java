@@ -66,14 +66,17 @@ public class Game {
         if(playerIndex < 0)
             playerIndex += numberOfPlayers;
 
+        //TODO: possibly improve this logic
         if(!pickingColor) {
             if (!currentPlayer.hand.isEmpty()) {
                 currentPlayer = players.get(playerIndex % numberOfPlayers);
+                if(card.number == Data.DRAW_TWO) activity.drawExtra(currentPlayer, 2);
                 activity.endTurn();
             }else
                 activity.endGame(currentPlayer);
         }else{
             currentPlayer = players.get(playerIndex % numberOfPlayers);
+            if (card.number == Data.WILD_DRAW_FOUR) activity.drawExtra(currentPlayer, 4);
         }
     }
 

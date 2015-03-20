@@ -34,7 +34,6 @@ import java.util.List;
         add delays and transitions between card placements
         create animation for shuffling the discard to the deck
         create uno button
-        implement extra card features
  */
 public class PlayActivity extends Activity implements View.OnClickListener{
 

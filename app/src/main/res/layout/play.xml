@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#3f8900"
     android:orientation="horizontal"
@@ -9,8 +9,7 @@
     <!-- Game Board -->
     <RelativeLayout
         android:padding="@dimen/general_padding"
-        android:layout_weight="8"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <!-- draw/discard-->
@@ -43,7 +42,6 @@
             android:layout_alignParentStart="true"
             android:layout_width="@dimen/hand_width"
             android:layout_height="@dimen/card_height"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/right"
             android:layout_centerVertical="true"
@@ -51,14 +49,12 @@
             android:layout_alignParentEnd="true"
             android:layout_width="@dimen/hand_width"
             android:layout_height="@dimen/card_height"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/top"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:layout_width="@dimen/hand_width"
             android:layout_height="@dimen/card_height"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/bottom"
             android:layout_centerHorizontal="true"
@@ -75,7 +71,6 @@
             android:layout_alignParentTop="true"
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
-
         <Button
             android:text="Blue"
             android:id="@+id/bBlue"
@@ -85,7 +80,6 @@
             android:layout_alignParentEnd="true"
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
-
         <Button
             android:text="Green"
             android:id="@+id/bGreen"
@@ -95,7 +89,6 @@
             android:layout_alignParentBottom="true"
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
-
         <Button
             android:text="Yello"
             android:id="@+id/bYellow"
@@ -106,17 +99,21 @@
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlDiscard"
+        android:background="#8C000000"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/discardHistoryList"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_height"/>
 
     </RelativeLayout>
 
-    <!-- scores/history -->
-    <LinearLayout
-        android:background="#dddddd"
-        android:layout_weight="0"
-        android:layout_width="0dp"
-        android:layout_height="match_parent">
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

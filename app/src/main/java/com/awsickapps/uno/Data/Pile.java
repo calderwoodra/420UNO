@@ -11,7 +11,7 @@ import java.util.Collections;
  */
 public class Pile {
 
-    ArrayList<Card> cards;
+    public ArrayList<Card> cards;
     int size;
     boolean isDraw;
 

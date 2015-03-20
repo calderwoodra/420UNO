@@ -26,7 +26,6 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
     Game game;
     Context context;
     Player player;
-    PlayerHandsAdapter pha;
 
     public PlayerHandsAdapter(Context context, Player player, Game game){
         inflater = LayoutInflater.from(context);

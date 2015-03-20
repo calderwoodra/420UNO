@@ -45,16 +45,9 @@ public class Game {
             case Data.REVERSE:
                 isCCW = !isCCW;
                 break;
-            case Data.DRAW_TWO:
-                draw(2);
-                break;
             case Data.WILD_DRAW_FOUR:
-                activity.pickColor();
-                pickingColor = true;
-                break;
             case Data.WILD:
                 activity.pickColor();
-                draw(4);
                 pickingColor = true;
                 break;
             case Data.SKIP:
@@ -71,7 +64,7 @@ public class Game {
             playerIndex++;
 
         if(playerIndex < 0)
-            playerIndex += 4;
+            playerIndex += numberOfPlayers;
 
         if(!pickingColor) {
             if (!currentPlayer.hand.isEmpty()) {

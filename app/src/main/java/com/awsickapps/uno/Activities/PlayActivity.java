@@ -139,7 +139,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
                 ivDraw.setVisibility(View.INVISIBLE);
         }else{
             game.refillDrawPile();
-            discardAdapter.cards = game.discard.cards;
             ivDraw.setVisibility(View.VISIBLE);
             drawCard(hand, adapter);
         }

@@ -70,14 +70,17 @@ public class Game {
         else
             playerIndex++;
 
+        if(playerIndex < 0)
+            playerIndex += 4;
+
         if(!pickingColor) {
             if (!currentPlayer.hand.isEmpty()) {
-                currentPlayer = players.get(Math.abs(playerIndex % numberOfPlayers));
+                currentPlayer = players.get(playerIndex % numberOfPlayers);
                 activity.endTurn();
             }else
                 activity.endGame(currentPlayer);
         }else{
-            currentPlayer = players.get(Math.abs(playerIndex % numberOfPlayers));
+            currentPlayer = players.get(playerIndex % numberOfPlayers);
         }
     }
 
@@ -86,7 +89,7 @@ public class Game {
         draw = discard;
         draw.isDraw = true;
         discard = new Pile(false);
-        discard.add(draw.drawCard());  //Done so that the card on top of the discard pile remains                        //because of the remove operation happening above.
+        discard.add(draw.drawCard());
         draw.shuffle();
     }
 

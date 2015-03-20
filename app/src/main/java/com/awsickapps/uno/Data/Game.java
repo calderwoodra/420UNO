@@ -70,13 +70,14 @@ public class Game {
         else
             playerIndex++;
 
-        currentPlayer = players.get(playerIndex % numberOfPlayers);
-
         if(!pickingColor) {
-            if (!currentPlayer.hand.isEmpty())
+            if (!currentPlayer.hand.isEmpty()) {
+                currentPlayer = players.get(Math.abs(playerIndex % numberOfPlayers));
                 activity.endTurn();
-            else
+            }else
                 activity.endGame(currentPlayer);
+        }else{
+            currentPlayer = players.get(Math.abs(playerIndex % numberOfPlayers));
         }
     }
 

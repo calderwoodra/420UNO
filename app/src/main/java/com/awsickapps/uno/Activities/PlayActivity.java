@@ -1,6 +1,7 @@
 package com.awsickapps.uno.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awsickapps.uno.Data;
 import com.awsickapps.uno.DiscardHistoryAdapter;
 import com.awsickapps.uno.PlayerHandsAdapter;
 import com.awsickapps.uno.R;
@@ -34,11 +36,10 @@ import java.util.List;
         build AI decisions
         flesh out menu/options screens
         create parallax cards in hands
-        create indicator for whose turn it is
         create indicator for what the current color is
         add delays and transitions between card placements
         create animation for shuffling the discard to the deck
-        create uno button
+        create uno button(will use the deck, give a 5 second delay to press it or they have to draw!)
  */
 public class PlayActivity extends Activity implements View.OnClickListener{
 
@@ -203,8 +204,9 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        //TODO: display confirmation screen to leave the game.
+        Intent intent = new Intent(this, EndGameActivity.class);
+        intent.putExtra(Data.QUIT_KEY, true);
+        startActivityForResult(intent, Data.QUIT_REQUEST_CODE);
     }
 
     @Override
@@ -249,5 +251,15 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         for (int i = 0; i < draw; i++)
             drawCard(player.hand, adapterMap.get(player));
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Data.QUIT_REQUEST_CODE){
+            if(data.getBooleanExtra(Data.QUIT_KEY, false)){
+                finish();
+            }
+        }
     }
 }

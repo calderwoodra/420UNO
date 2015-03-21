@@ -197,9 +197,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     }
 
     public void endGame(Player player){
-        //TODO: Make this more glorious...
-        Toast.makeText(this, player.name + " has won!!!", Toast.LENGTH_LONG).show();
-        finish();
+
+        Intent intent = new Intent(this, EndGameActivity.class);
+        intent.putExtra(Data.WINNING_SCREEN_KEY, true);
+        intent.putExtra(Data.WINNER_NAME_KEY, player.name);
+        startActivityForResult(intent, Data.WIN_REQUEST_CODE);
     }
 
     @Override
@@ -257,9 +259,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == Data.QUIT_REQUEST_CODE){
-            if(data.getBooleanExtra(Data.QUIT_KEY, false)){
+            if(data.getBooleanExtra(Data.QUIT_KEY, false))
                 finish();
-            }
+        }else if(requestCode == Data.WIN_REQUEST_CODE){
+            finish();
         }
     }
 }

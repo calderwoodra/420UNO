@@ -1,6 +1,7 @@
 package com.awsickapps.uno.activities;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awsickapps.uno.DiscardHistoryAdapter;
 import com.awsickapps.uno.PlayerHandsAdapter;
 import com.awsickapps.uno.R;
+import com.awsickapps.uno.VerticalTextView;
 import com.awsickapps.uno.data.Card;
 import com.awsickapps.uno.data.Game;
 import com.awsickapps.uno.data.Player;
@@ -32,7 +35,7 @@ import java.util.List;
         flesh out menu/options screens
         create parallax cards in hands
         create indicator for whose turn it is
-        onclick discard, create history overlay
+        create indicator for what the current color is
         add delays and transitions between card placements
         create animation for shuffling the discard to the deck
         create uno button
@@ -44,9 +47,12 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     Button bGreen, bRed, bYellow, bBlue;
     RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
     PlayerHandsAdapter leftAdapter, rightAdapter, topAdapter, bottomAdapter;
+    TextView tvTop, tvBottom;
+    VerticalTextView tvLeft, tvRight;
     RelativeLayout rlDiscard;
     DiscardHistoryAdapter discardAdapter;
     HashMap<Player, PlayerHandsAdapter> adapterMap;
+    HashMap<Player, TextView> textViewMap;
     Game game;
 
     @Override
@@ -55,6 +61,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.play);
 
         adapterMap = new HashMap<>();
+        textViewMap= new HashMap<>();
 
         rvLeft   = (RecyclerView) findViewById(R.id.left);
         rvRight  = (RecyclerView) findViewById(R.id.right);
@@ -68,6 +75,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         bYellow  = (Button) findViewById(R.id.bYellow);
         bRed     = (Button) findViewById(R.id.bRed);
         rlDiscard= (RelativeLayout) findViewById(R.id.rlDiscard);
+        tvLeft   = (VerticalTextView) findViewById(R.id.tvLeft);
+        tvRight  = (VerticalTextView) findViewById(R.id.tvRight);
+        tvBottom = (TextView) findViewById(R.id.tvBottom);
+        tvTop    = (TextView) findViewById(R.id.tvTop);
 
         rlDiscard.setOnClickListener(this);
         ivDiscard.setOnClickListener(this);
@@ -86,6 +97,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         ivDiscard.setImageResource(game.discard.getTop().getImageResource());
         ivDiscard.setVisibility(View.VISIBLE);
 
+        tvBottom.setText(game.players.get(0).name);
+        tvLeft.setText(game.players.get(1).name);
+        tvTop.setText(game.players.get(2).name);
+        tvRight.setText(game.players.get(3).name);
+
         bottomHand = game.players.get(0).hand;
         leftHand   = game.players.get(1).hand;
         topHand    = game.players.get(2).hand;
@@ -101,6 +117,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         adapterMap.put(game.players.get(1), leftAdapter);
         adapterMap.put(game.players.get(2), topAdapter);
         adapterMap.put(game.players.get(3), rightAdapter);
+
+        textViewMap.put(game.players.get(0), tvBottom);
+        textViewMap.put(game.players.get(1), tvLeft);
+        textViewMap.put(game.players.get(2), tvTop);
+        textViewMap.put(game.players.get(3), tvRight);
 
         rvLeft.setAdapter(leftAdapter);
         rvRight.setAdapter(rightAdapter);
@@ -122,6 +143,13 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     }
 
     private void engageTurn(Player player, Card discard){
+
+        tvBottom.setBackgroundColor(Color.TRANSPARENT);
+        tvLeft.setBackgroundColor(Color.TRANSPARENT);
+        tvRight.setBackgroundColor(Color.TRANSPARENT);
+        tvTop.setBackgroundColor(Color.TRANSPARENT);
+
+        textViewMap.get(game.currentPlayer).setBackgroundColor(Color.BLACK);
 
         if(!hasValidCard(discard, player.hand)){
             while(!hasValidCard(discard, player.hand)){

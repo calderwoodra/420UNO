@@ -6,6 +6,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.awsickapps.uno.VerticalTextView
+        android:text="allen calderwood"
+        android:id="@+id/tvLeft"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/text_size"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/textview_padding"
+        android:layout_marginStart="@dimen/textview_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="allen calderwood"
+        android:id="@+id/tvTop"
+        android:textColor="#FFFFFF"
+        android:gravity="top"
+        android:rotation="180"
+        android:textSize="@dimen/text_size"
+        android:layout_marginTop="@dimen/textview_padding"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <com.awsickapps.uno.VerticalTextView
+        android:text="allen calderwood"
+        android:id="@+id/tvRight"
+        android:textColor="#FFFFFF"
+        android:gravity="bottom"
+        android:textSize="@dimen/text_size"
+        android:layout_marginEnd="@dimen/textview_padding"
+        android:layout_marginRight="@dimen/textview_padding"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="allen calderwood"
+        android:id="@+id/tvBottom"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/text_size"
+        android:layout_marginBottom="@dimen/textview_padding"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <!-- Game Board -->
     <RelativeLayout
         android:padding="@dimen/general_padding"

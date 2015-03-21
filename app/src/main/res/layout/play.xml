@@ -111,7 +111,7 @@
             android:layout_height="@dimen/card_height"/>
 
         <Button
-            android:text="Red"
+            android:text="@string/red"
             android:id="@+id/bRed"
             android:visibility="invisible"
             android:layout_alignParentLeft="true"
@@ -120,7 +120,7 @@
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
         <Button
-            android:text="Blue"
+            android:text="@string/blue"
             android:id="@+id/bBlue"
             android:visibility="invisible"
             android:layout_alignParentTop="true"
@@ -129,7 +129,7 @@
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
         <Button
-            android:text="Green"
+            android:text="@string/green"
             android:id="@+id/bGreen"
             android:visibility="invisible"
             android:layout_alignParentRight="true"
@@ -138,7 +138,7 @@
             android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content" />
         <Button
-            android:text="Yello"
+            android:text="@string/yellow"
             android:id="@+id/bYellow"
             android:visibility="invisible"
             android:layout_alignParentBottom="true"

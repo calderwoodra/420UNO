@@ -109,44 +109,46 @@
             android:layout_width="@dimen/hand_width"
             android:layout_height="@dimen/card_height"/>
 
-        <Button
-            android:text="@string/red"
-            android:id="@+id/bRed"
-            android:visibility="invisible"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content" />
-        <Button
-            android:text="@string/blue"
-            android:id="@+id/bBlue"
-            android:visibility="invisible"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content" />
-        <Button
-            android:text="@string/green"
-            android:id="@+id/bGreen"
-            android:visibility="invisible"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content" />
-        <Button
-            android:text="@string/yellow"
-            android:id="@+id/bYellow"
-            android:visibility="invisible"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="wrap_content" />
-
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llChoseColor"
+        android:background="#8C000000"
+        android:visibility="invisible"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/bRed"
+            android:background="@drawable/red_card"
+            android:layout_margin="@dimen/general_padding"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height" />
+
+        <Button
+            android:id="@+id/bYellow"
+            android:background="@drawable/yellow_card"
+            android:layout_margin="@dimen/general_padding"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height" />
+
+        <Button
+            android:id="@+id/bBlue"
+            android:background="@drawable/blue_card"
+            android:layout_margin="@dimen/general_padding"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height" />
+
+        <Button
+            android:id="@+id/bGreen"
+            android:background="@drawable/green_card"
+            android:layout_margin="@dimen/general_padding"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rlDiscard"

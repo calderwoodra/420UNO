@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     RelativeLayout rlDiscard;
     TextView tvTop, tvBottom;
     RelativeLayout rlGameBoard;
+    LinearLayout llChooseColor;
     ImageView ivDraw, ivDiscard;
     VerticalTextView tvLeft, tvRight;
     Button bGreen, bRed, bYellow, bBlue;
@@ -64,23 +66,24 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         adapterMap = new HashMap<>();
         textViewMap= new HashMap<>();
 
-        rvLeft     = (RecyclerView) findViewById(R.id.left);
-        rvRight    = (RecyclerView) findViewById(R.id.right);
-        rvBottom   = (RecyclerView) findViewById(R.id.bottom);
-        rvTop      = (RecyclerView) findViewById(R.id.top);
-        rvDiscard  = (RecyclerView) findViewById(R.id.discardHistoryList);
-        ivDraw     = (ImageView) findViewById(R.id.draw);
-        ivDiscard  = (ImageView) findViewById(R.id.discard);
-        bGreen     = (Button) findViewById(R.id.bGreen);
-        bBlue      = (Button) findViewById(R.id.bBlue);
-        bYellow    = (Button) findViewById(R.id.bYellow);
-        bRed       = (Button) findViewById(R.id.bRed);
-        rlDiscard  = (RelativeLayout) findViewById(R.id.rlDiscard);
-        tvLeft     = (VerticalTextView) findViewById(R.id.tvLeft);
-        tvRight    = (VerticalTextView) findViewById(R.id.tvRight);
-        tvBottom   = (TextView) findViewById(R.id.tvBottom);
-        tvTop      = (TextView) findViewById(R.id.tvTop);
-        rlGameBoard= (RelativeLayout) findViewById(R.id.rlGameBoard);
+        rvLeft        = (RecyclerView) findViewById(R.id.left);
+        rvRight       = (RecyclerView) findViewById(R.id.right);
+        rvBottom      = (RecyclerView) findViewById(R.id.bottom);
+        rvTop         = (RecyclerView) findViewById(R.id.top);
+        rvDiscard     = (RecyclerView) findViewById(R.id.discardHistoryList);
+        ivDraw        = (ImageView) findViewById(R.id.draw);
+        ivDiscard     = (ImageView) findViewById(R.id.discard);
+        bGreen        = (Button) findViewById(R.id.bGreen);
+        bBlue         = (Button) findViewById(R.id.bBlue);
+        bYellow       = (Button) findViewById(R.id.bYellow);
+        bRed          = (Button) findViewById(R.id.bRed);
+        rlDiscard     = (RelativeLayout) findViewById(R.id.rlDiscard);
+        tvLeft        = (VerticalTextView) findViewById(R.id.tvLeft);
+        tvRight       = (VerticalTextView) findViewById(R.id.tvRight);
+        tvBottom      = (TextView) findViewById(R.id.tvBottom);
+        tvTop         = (TextView) findViewById(R.id.tvTop);
+        rlGameBoard   = (RelativeLayout) findViewById(R.id.rlGameBoard);
+        llChooseColor = (LinearLayout) findViewById(R.id.llChoseColor);
 
         rlDiscard.setOnClickListener(this);
         ivDiscard.setOnClickListener(this);
@@ -92,7 +95,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         setupGame();
         engageTurn(game.currentPlayer, game.discard.getTop());
     }
-
     public void endTurn(){
         Card discardTop = game.discard.getTop();
         ivDiscard.setImageResource(discardTop.getImageResource());
@@ -100,10 +102,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         engageTurn(game.currentPlayer, discardTop);
     }
     public void pickColor(){
-        bRed.setVisibility(View.VISIBLE);
-        bBlue.setVisibility(View.VISIBLE);
-        bGreen.setVisibility(View.VISIBLE);
-        bYellow.setVisibility(View.VISIBLE);
+        llChooseColor.setVisibility(View.VISIBLE);
     }
     public void endGame(Player player){
 
@@ -119,10 +118,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     }
 
     private void colorChosen(){
-        bRed.setVisibility(View.INVISIBLE);
-        bBlue.setVisibility(View.INVISIBLE);
-        bGreen.setVisibility(View.INVISIBLE);
-        bYellow.setVisibility(View.INVISIBLE);
+        llChooseColor.setVisibility(View.INVISIBLE);
         endTurn();
     }
     private boolean hasValidCard(Card discard, List<Card> hand){

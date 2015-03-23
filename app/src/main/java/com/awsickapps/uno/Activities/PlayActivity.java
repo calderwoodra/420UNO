@@ -43,19 +43,19 @@ import java.util.List;
  */
 public class PlayActivity extends Activity implements View.OnClickListener{
 
-    ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
+    Game game;
+    RelativeLayout rlDiscard;
+    TextView tvTop, tvBottom;
     ImageView ivDraw, ivDiscard;
+    VerticalTextView tvLeft, tvRight;
     Button bGreen, bRed, bYellow, bBlue;
+    DiscardHistoryAdapter discardAdapter;
+    HashMap<Player, TextView> textViewMap;
+    HashMap<Player, PlayerHandsAdapter> adapterMap;
+    ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
     RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
     PlayerHandsAdapter leftAdapter, rightAdapter, topAdapter, bottomAdapter;
-    TextView tvTop, tvBottom;
-    VerticalTextView tvLeft, tvRight;
-    RelativeLayout rlDiscard;
-    DiscardHistoryAdapter discardAdapter;
-    HashMap<Player, PlayerHandsAdapter> adapterMap;
-    HashMap<Player, TextView> textViewMap;
-    Game game;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +92,46 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         engageTurn(game.currentPlayer, game.discard.getTop());
     }
 
+    public void endTurn(){
+        Card discardTop = game.discard.getTop();
+        ivDiscard.setImageResource(discardTop.getImageResource());
+        engageTurn(game.currentPlayer, discardTop);
+    }
+    public void pickColor(){
+        bRed.setVisibility(View.VISIBLE);
+        bBlue.setVisibility(View.VISIBLE);
+        bGreen.setVisibility(View.VISIBLE);
+        bYellow.setVisibility(View.VISIBLE);
+    }
+    public void endGame(Player player){
+
+        Intent intent = new Intent(this, EndGameActivity.class);
+        intent.putExtra(Data.WINNING_SCREEN_KEY, true);
+        intent.putExtra(Data.WINNER_NAME_KEY, player.name);
+        startActivityForResult(intent, Data.WIN_REQUEST_CODE);
+    }
+    public void drawExtra(Player player, int draw){
+        for (int i = 0; i < draw; i++)
+            drawCard(player.hand, adapterMap.get(player));
+
+    }
+
+    private void colorChosen(){
+        bRed.setVisibility(View.INVISIBLE);
+        bBlue.setVisibility(View.INVISIBLE);
+        bGreen.setVisibility(View.INVISIBLE);
+        bYellow.setVisibility(View.INVISIBLE);
+        endTurn();
+    }
+    private boolean hasValidCard(Card discard, List<Card> hand){
+
+        for(Card card : hand){
+            if(card.canPlayOn(discard))
+                return true;
+        }
+
+        return false;
+    }
     //TODO: redo to accomidate 4+ players
     private void setupGame(){
         game = new Game("Player 1", this);
@@ -142,7 +182,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             drawCard(topHand, topAdapter);
         }
     }
-
     private void engageTurn(Player player, Card discard){
 
         tvBottom.setBackgroundColor(Color.TRANSPARENT);
@@ -158,7 +197,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             }
         }
     }
-
     private void drawCard(ArrayList<Card> hand, PlayerHandsAdapter adapter){
         if(!game.draw.isEmpty()){
             hand.add(game.draw.drawCard());
@@ -173,44 +211,12 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    private boolean hasValidCard(Card discard, List<Card> hand){
-
-        for(Card card : hand){
-            if(card.canPlayOn(discard))
-                return true;
-        }
-
-        return false;
-    }
-
-    public void endTurn(){
-        Card discardTop = game.discard.getTop();
-        ivDiscard.setImageResource(discardTop.getImageResource());
-        engageTurn(game.currentPlayer, discardTop);
-    }
-
-    public void pickColor(){
-        bRed.setVisibility(View.VISIBLE);
-        bBlue.setVisibility(View.VISIBLE);
-        bGreen.setVisibility(View.VISIBLE);
-        bYellow.setVisibility(View.VISIBLE);
-    }
-
-    public void endGame(Player player){
-
-        Intent intent = new Intent(this, EndGameActivity.class);
-        intent.putExtra(Data.WINNING_SCREEN_KEY, true);
-        intent.putExtra(Data.WINNER_NAME_KEY, player.name);
-        startActivityForResult(intent, Data.WIN_REQUEST_CODE);
-    }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, EndGameActivity.class);
         intent.putExtra(Data.QUIT_KEY, true);
         startActivityForResult(intent, Data.QUIT_REQUEST_CODE);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -240,21 +246,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
                 break;
         }
     }
-
-    private void colorChosen(){
-        bRed.setVisibility(View.INVISIBLE);
-        bBlue.setVisibility(View.INVISIBLE);
-        bGreen.setVisibility(View.INVISIBLE);
-        bYellow.setVisibility(View.INVISIBLE);
-        endTurn();
-    }
-
-    public void drawExtra(Player player, int draw){
-        for (int i = 0; i < draw; i++)
-            drawCard(player.hand, adapterMap.get(player));
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

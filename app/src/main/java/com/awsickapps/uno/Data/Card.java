@@ -11,7 +11,7 @@ import com.awsickapps.uno.R;
 public class Card {
 
     public enum Color {red, blue, green, yellow, wild}
-    Color color;
+    public Color color;
     int number;
 
     /*

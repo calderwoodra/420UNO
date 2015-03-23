@@ -11,5 +11,10 @@
     <dimen name="hand_width">300dp</dimen>
     <dimen name="button_width">100dp</dimen>
     <dimen name="button_height">40dp</dimen>
+    <color name="green">#00AC71</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#003BFF</color>
+    <color name="yellow">#F8E71C</color>
+    <color name="wild">#000000</color>
 
 </resources>

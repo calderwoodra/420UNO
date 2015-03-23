@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.awsickapps.uno.Data;
 import com.awsickapps.uno.DiscardHistoryAdapter;
@@ -28,8 +27,8 @@ import java.util.List;
 
 /**
  * Created by allen on 3/15/15.
+ * ${PACKAGE_NAME}
  */
-
 /*
     TODO:
         hide AI cards
@@ -46,6 +45,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     Game game;
     RelativeLayout rlDiscard;
     TextView tvTop, tvBottom;
+    RelativeLayout rlGameBoard;
     ImageView ivDraw, ivDiscard;
     VerticalTextView tvLeft, tvRight;
     Button bGreen, bRed, bYellow, bBlue;
@@ -55,7 +55,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
     RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
     PlayerHandsAdapter leftAdapter, rightAdapter, topAdapter, bottomAdapter;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,22 +64,23 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         adapterMap = new HashMap<>();
         textViewMap= new HashMap<>();
 
-        rvLeft   = (RecyclerView) findViewById(R.id.left);
-        rvRight  = (RecyclerView) findViewById(R.id.right);
-        rvBottom = (RecyclerView) findViewById(R.id.bottom);
-        rvTop    = (RecyclerView) findViewById(R.id.top);
-        rvDiscard= (RecyclerView) findViewById(R.id.discardHistoryList);
-        ivDraw   = (ImageView) findViewById(R.id.draw);
-        ivDiscard= (ImageView) findViewById(R.id.discard);
-        bGreen   = (Button) findViewById(R.id.bGreen);
-        bBlue    = (Button) findViewById(R.id.bBlue);
-        bYellow  = (Button) findViewById(R.id.bYellow);
-        bRed     = (Button) findViewById(R.id.bRed);
-        rlDiscard= (RelativeLayout) findViewById(R.id.rlDiscard);
-        tvLeft   = (VerticalTextView) findViewById(R.id.tvLeft);
-        tvRight  = (VerticalTextView) findViewById(R.id.tvRight);
-        tvBottom = (TextView) findViewById(R.id.tvBottom);
-        tvTop    = (TextView) findViewById(R.id.tvTop);
+        rvLeft     = (RecyclerView) findViewById(R.id.left);
+        rvRight    = (RecyclerView) findViewById(R.id.right);
+        rvBottom   = (RecyclerView) findViewById(R.id.bottom);
+        rvTop      = (RecyclerView) findViewById(R.id.top);
+        rvDiscard  = (RecyclerView) findViewById(R.id.discardHistoryList);
+        ivDraw     = (ImageView) findViewById(R.id.draw);
+        ivDiscard  = (ImageView) findViewById(R.id.discard);
+        bGreen     = (Button) findViewById(R.id.bGreen);
+        bBlue      = (Button) findViewById(R.id.bBlue);
+        bYellow    = (Button) findViewById(R.id.bYellow);
+        bRed       = (Button) findViewById(R.id.bRed);
+        rlDiscard  = (RelativeLayout) findViewById(R.id.rlDiscard);
+        tvLeft     = (VerticalTextView) findViewById(R.id.tvLeft);
+        tvRight    = (VerticalTextView) findViewById(R.id.tvRight);
+        tvBottom   = (TextView) findViewById(R.id.tvBottom);
+        tvTop      = (TextView) findViewById(R.id.tvTop);
+        rlGameBoard= (RelativeLayout) findViewById(R.id.rlGameBoard);
 
         rlDiscard.setOnClickListener(this);
         ivDiscard.setOnClickListener(this);
@@ -95,6 +96,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     public void endTurn(){
         Card discardTop = game.discard.getTop();
         ivDiscard.setImageResource(discardTop.getImageResource());
+        setCurrentColor();
         engageTurn(game.currentPlayer, discardTop);
     }
     public void pickColor(){
@@ -132,10 +134,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
         return false;
     }
-    //TODO: redo to accomidate 4+ players
+    //TODO: redo to accommadate 4+ players
     private void setupGame(){
         game = new Game("Player 1", this);
         ivDiscard.setImageResource(game.discard.getTop().getImageResource());
+        setCurrentColor();
         ivDiscard.setVisibility(View.VISIBLE);
 
         tvBottom.setText(game.players.get(0).name);
@@ -209,6 +212,26 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             ivDraw.setVisibility(View.VISIBLE);
             drawCard(hand, adapter);
         }
+    }
+    private void setCurrentColor(){
+        switch (game.discard.getTop().color) {
+            case yellow:
+                rlGameBoard.setBackgroundColor(getResources().getColor(R.color.yellow));
+                break;
+            case blue:
+                rlGameBoard.setBackgroundColor(getResources().getColor(R.color.blue));
+                break;
+            case green:
+                rlGameBoard.setBackgroundColor(getResources().getColor(R.color.green));
+                break;
+            case wild:
+                rlGameBoard.setBackgroundColor(getResources().getColor(R.color.wild));
+                break;
+            case red:
+                rlGameBoard.setBackgroundColor(getResources().getColor(R.color.red));
+                break;
+        }
+
     }
 
     @Override

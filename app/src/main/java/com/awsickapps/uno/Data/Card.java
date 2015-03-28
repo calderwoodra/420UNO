@@ -12,7 +12,7 @@ public class Card {
 
     public enum Color {red, blue, green, yellow, wild}
     public Color color;
-    int number;
+    public int number;
 
     /*
         0-9 : 0-9

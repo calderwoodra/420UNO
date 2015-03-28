@@ -2,6 +2,7 @@ package com.awsickapps.uno;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,7 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = inflater.inflate(R.layout.card_view, viewGroup, false);
-        CardViewHolder cvh = new CardViewHolder(view);
-        return cvh;
+        return new CardViewHolder(view);
     }
 
     @Override
@@ -64,10 +64,13 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
         });
     }
 
-    private void playCard(int i){
-        Toast.makeText(context, "Cards matched", Toast.LENGTH_SHORT).show();
-        game.discardCard(cards.remove(i));
-        this.notifyDataSetChanged();
+    public void playCard(int i){
+        //Toast.makeText(context, "Cards matched", Toast.LENGTH_SHORT).show();
+        Log.d("playCard", "Color: " + cards.get(i).color + "\t\tnumber: " + cards.get(i).number + "\tplayer: " + game.currentPlayer.name);
+        game.discardCard(cards.remove(i), i);
+        //notifyItemRemoved(i);
+        notifyDataSetChanged();
+
     }
 
     public void setCards(List<Card> cards){

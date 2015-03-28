@@ -1,12 +1,18 @@
 package com.awsickapps.uno.activities;
 
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,19 +49,23 @@ import java.util.List;
  */
 public class PlayActivity extends Activity implements View.OnClickListener{
 
+    int numOfDraws = 0;
+    private static final int animationTime = 300;
+
     Game game;
     RelativeLayout rlDiscard;
     TextView tvTop, tvBottom;
     RelativeLayout rlGameBoard;
-    LinearLayout llChooseColor;
-    ImageView ivDraw, ivDiscard;
     VerticalTextView tvLeft, tvRight;
     Button bGreen, bRed, bYellow, bBlue;
     DiscardHistoryAdapter discardAdapter;
     HashMap<Player, TextView> textViewMap;
-    HashMap<Player, PlayerHandsAdapter> adapterMap;
+    LinearLayout llChooseColor, llDrawDiscard;
+    public HashMap<Player, RecyclerView> rvMap; //rvHand
+    ImageView ivDraw, ivDiscard, ivDrawAnimation;
+    HashMap<Player, PlayerHandsAdapter> adapterMap; //adapter
     ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
-    RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
+    public RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
     PlayerHandsAdapter leftAdapter, rightAdapter, topAdapter, bottomAdapter;
 
     @Override
@@ -65,25 +75,28 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
         adapterMap = new HashMap<>();
         textViewMap= new HashMap<>();
+        rvMap      = new HashMap<>();
 
-        rvLeft        = (RecyclerView) findViewById(R.id.left);
-        rvRight       = (RecyclerView) findViewById(R.id.right);
-        rvBottom      = (RecyclerView) findViewById(R.id.bottom);
-        rvTop         = (RecyclerView) findViewById(R.id.top);
-        rvDiscard     = (RecyclerView) findViewById(R.id.discardHistoryList);
-        ivDraw        = (ImageView) findViewById(R.id.draw);
-        ivDiscard     = (ImageView) findViewById(R.id.discard);
-        bGreen        = (Button) findViewById(R.id.bGreen);
-        bBlue         = (Button) findViewById(R.id.bBlue);
-        bYellow       = (Button) findViewById(R.id.bYellow);
-        bRed          = (Button) findViewById(R.id.bRed);
-        rlDiscard     = (RelativeLayout) findViewById(R.id.rlDiscard);
-        tvLeft        = (VerticalTextView) findViewById(R.id.tvLeft);
-        tvRight       = (VerticalTextView) findViewById(R.id.tvRight);
-        tvBottom      = (TextView) findViewById(R.id.tvBottom);
-        tvTop         = (TextView) findViewById(R.id.tvTop);
-        rlGameBoard   = (RelativeLayout) findViewById(R.id.rlGameBoard);
-        llChooseColor = (LinearLayout) findViewById(R.id.llChoseColor);
+        rvLeft          = (RecyclerView) findViewById(R.id.left);
+        rvRight         = (RecyclerView) findViewById(R.id.right);
+        rvBottom        = (RecyclerView) findViewById(R.id.bottom);
+        rvTop           = (RecyclerView) findViewById(R.id.top);
+        rvDiscard       = (RecyclerView) findViewById(R.id.discardHistoryList);
+        ivDraw          = (ImageView) findViewById(R.id.draw);
+        ivDiscard       = (ImageView) findViewById(R.id.discard);
+        ivDrawAnimation = (ImageView) findViewById(R.id.drawAnimation);
+        bGreen          = (Button) findViewById(R.id.bGreen);
+        bBlue           = (Button) findViewById(R.id.bBlue);
+        bYellow         = (Button) findViewById(R.id.bYellow);
+        bRed            = (Button) findViewById(R.id.bRed);
+        tvLeft          = (VerticalTextView) findViewById(R.id.tvLeft);
+        tvRight         = (VerticalTextView) findViewById(R.id.tvRight);
+        tvBottom        = (TextView) findViewById(R.id.tvBottom);
+        tvTop           = (TextView) findViewById(R.id.tvTop);
+        rlDiscard       = (RelativeLayout) findViewById(R.id.rlDiscard);
+        rlGameBoard     = (RelativeLayout) findViewById(R.id.rlGameBoard);
+        llChooseColor   = (LinearLayout) findViewById(R.id.llChoseColor);
+        llDrawDiscard   = (LinearLayout) findViewById(R.id.llDrawDiscard);
 
         rlDiscard.setOnClickListener(this);
         ivDiscard.setOnClickListener(this);
@@ -101,8 +114,12 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         setCurrentColor();
         engageTurn(game.currentPlayer, discardTop);
     }
-    public void pickColor(){
+    public void pickColor(Player lastPlayer){
+
         llChooseColor.setVisibility(View.VISIBLE);
+        if(lastPlayer.isAI){
+            chooseColor(getMaxColor(lastPlayer.hand));
+        }
     }
     public void endGame(Player player){
 
@@ -113,23 +130,23 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     }
     public void drawExtra(Player player, int draw){
         for (int i = 0; i < draw; i++)
-            drawCard(player.hand, adapterMap.get(player));
-
+            drawCard(player.hand, adapterMap.get(player), rvMap.get(player));
     }
 
     private void colorChosen(){
         llChooseColor.setVisibility(View.INVISIBLE);
         endTurn();
     }
-    private boolean hasValidCard(Card discard, List<Card> hand){
+    private int hasValidCard(Card discard, List<Card> hand){
 
-        for(Card card : hand){
-            if(card.canPlayOn(discard))
-                return true;
+        for(int i = 0; i < hand.size(); i++){
+            if(hand.get(i).canPlayOn(discard))
+                return i;
         }
 
-        return false;
+        return -1;
     }
+
     //TODO: redo to accommadate 4+ players
     private void setupGame(){
         game = new Game("Player 1", this);
@@ -158,6 +175,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         adapterMap.put(game.players.get(2), topAdapter);
         adapterMap.put(game.players.get(3), rightAdapter);
 
+        rvMap.put(game.players.get(0), rvBottom);
+        rvMap.put(game.players.get(1), rvLeft);
+        rvMap.put(game.players.get(2), rvTop);
+        rvMap.put(game.players.get(3), rvRight);
+
         textViewMap.put(game.players.get(0), tvBottom);
         textViewMap.put(game.players.get(1), tvLeft);
         textViewMap.put(game.players.get(2), tvTop);
@@ -168,17 +190,17 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         rvTop.setAdapter(topAdapter);
         rvBottom.setAdapter(bottomAdapter);
         rvDiscard.setAdapter(discardAdapter);
-        rvLeft.setLayoutManager(new GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false));
-        rvRight.setLayoutManager(new GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false));
-        rvTop.setLayoutManager(new GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false));
-        rvBottom.setLayoutManager(new GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false));
-        rvDiscard.setLayoutManager(new GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false));
+        rvLeft.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvRight.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvTop.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvBottom.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvDiscard.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        for(int i =0; i < 7; i++){
-            drawCard(bottomHand, bottomAdapter);
-            drawCard(leftHand, leftAdapter);
-            drawCard(rightHand, rightAdapter);
-            drawCard(topHand, topAdapter);
+        for(int i = 0; i < 7; i++){
+            drawCard(bottomHand, bottomAdapter, rvBottom);
+            drawCard(leftHand, leftAdapter, rvLeft);
+            drawCard(rightHand, rightAdapter, rvRight);
+            drawCard(topHand, topAdapter, rvTop);
         }
     }
     private void engageTurn(Player player, Card discard){
@@ -190,23 +212,69 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
         textViewMap.get(game.currentPlayer).setBackgroundColor(Color.BLACK);
 
-        if(!hasValidCard(discard, player.hand)){
-            while(!hasValidCard(discard, player.hand)){
-                drawCard(player.hand, adapterMap.get(player));
+        int position;
+        while((position = hasValidCard(discard, player.hand)) < 0)
+            drawCard(player.hand, adapterMap.get(player), rvMap.get(player));
+
+        boolean isWild = player.hand.get(position).number >= 13;
+
+        if (player.isAI)
+            adapterMap.get(game.currentPlayer).playCard(position);
+    }
+    private Card.Color getMaxColor(ArrayList<Card> hand){
+
+        int blue = 0, red = 0, green = 0, yellow = 0;
+        for(Card card : hand){
+            if(card.number < 13) {
+                if (card.color == Card.Color.blue)
+                    blue++;
+                if (card.color == Card.Color.green)
+                    green++;
+                if (card.color == Card.Color.red)
+                    red++;
+                if (card.color == Card.Color.yellow)
+                    yellow++;
             }
         }
+
+        if((blue >= red) && (blue >= green) && (blue >= yellow))
+            return Card.Color.blue;
+        else if((red >= blue) && (red >= green) && (red >= yellow))
+            return Card.Color.red;
+        else if((yellow >= red) && (yellow >= green) && (yellow >= blue))
+            return Card.Color.yellow;
+        else
+            return Card.Color.green;
     }
-    private void drawCard(ArrayList<Card> hand, PlayerHandsAdapter adapter){
+    private void chooseColor(Card.Color color){
+        switch (color){
+            case blue:
+                bBlue.performClick();
+                break;
+            case green:
+                bGreen.performClick();
+                break;
+            case yellow:
+                bYellow.performClick();
+                break;
+            case red:
+                bRed.performClick();
+                break;
+        }
+    }
+    private void drawCard(ArrayList<Card> hand, PlayerHandsAdapter adapter, RecyclerView rv){
         if(!game.draw.isEmpty()){
+            //drawCardAnimation();
             hand.add(game.draw.drawCard());
             adapter.setCards(hand);
+            //adapter.notifyItemInserted(hand.size());
             adapter.notifyDataSetChanged();
             if(game.draw.isEmpty())
                 ivDraw.setVisibility(View.INVISIBLE);
         }else{
             game.refillDrawPile();
             ivDraw.setVisibility(View.VISIBLE);
-            drawCard(hand, adapter);
+            drawCard(hand, adapter, rv);
         }
     }
     private void setCurrentColor(){
@@ -228,6 +296,23 @@ public class PlayActivity extends Activity implements View.OnClickListener{
                 break;
         }
 
+    }
+    private void drawCardAnimation(){
+
+        ValueAnimator va = new ValueAnimator();
+        va.setRepeatCount(3);
+
+        ivDrawAnimation.animate()
+                .translationX(rvLeft.getX())
+                .translationY(rvLeft.getY())
+                .setDuration(animationTime)
+                .setStartDelay(animationTime * numOfDraws);
+
+//        ivDrawAnimation.animate()
+//                .translationX(ivDraw.getX())
+//                .translationY(ivDraw.getY())
+//                .setDuration(0)
+//                .setStartDelay(animationTime * (numOfDraws + 1));
     }
 
     @Override
@@ -256,12 +341,13 @@ public class PlayActivity extends Activity implements View.OnClickListener{
                 colorChosen();
                 break;
             case R.id.discard:
-                discardAdapter.reverseCards();
+                //discardAdapter.reverseCards();
                 discardAdapter.notifyDataSetChanged();
                 rlDiscard.setVisibility(View.VISIBLE);
                 break;
             case R.id.rlDiscard:
                 rlDiscard.setVisibility(View.INVISIBLE);
+                //discardAdapter.reverseCards();
                 break;
         }
     }

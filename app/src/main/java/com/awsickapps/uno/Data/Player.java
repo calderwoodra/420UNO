@@ -9,10 +9,18 @@ public class Player {
 
     public String name;
     public ArrayList<Card> hand;
+    public boolean isAI;
 
-    public Player(String name){
+    /* TODO: Possible refactor
+    public TextView tvPlayer;
+    public RecyclerView rvHand;
+    public PlayerHandsAdapter adapter;
+    */
+
+    public Player(String name, boolean isAI){
 
         this.name = name;
         hand = new ArrayList<>();
+        this.isAI = isAI;
     }
 }

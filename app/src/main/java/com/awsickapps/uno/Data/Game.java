@@ -1,5 +1,6 @@
 package com.awsickapps.uno.data;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.awsickapps.uno.Data;
@@ -27,29 +28,30 @@ public class Game {
         draw = new Pile(true);
         discard = new Pile(false);
         players = new ArrayList<>();
-        players.add(new Player(name));
-        players.add(new Player("AI 1"));
-        players.add(new Player("AI 2"));
-        players.add(new Player("AI 3"));
+        players.add(new Player(name, false));
+        players.add(new Player("AI 1", true));
+        players.add(new Player("AI 2", true));
+        players.add(new Player("AI 3", true));
         numberOfPlayers = players.size();
         playerIndex = 0;
         currentPlayer = players.get(playerIndex);
         topToDiscard();
     }
 
-    public void discardCard(Card card){
+    public void discardCard(Card card, int position){
+
         discard.add(card);
-        boolean pickingColor = false;
+        Player thisPlayer = currentPlayer;
+        //activity.rvMap.get(currentPlayer).getLayoutManager().removeViewAt(position);
 
         switch (card.number){
             case Data.REVERSE:
                 isCCW = !isCCW;
                 break;
-            case Data.WILD_DRAW_FOUR:
+            /*case Data.WILD_DRAW_FOUR:
             case Data.WILD:
                 activity.pickColor();
-                pickingColor = true;
-                break;
+                break;*/
             case Data.SKIP:
                 if(isCCW)
                     playerIndex--;
@@ -67,7 +69,8 @@ public class Game {
             playerIndex += numberOfPlayers;
 
         //TODO: possibly improve this logic
-        if(!pickingColor) {
+        if(card.number < 13) { //if not wild
+
             if (!currentPlayer.hand.isEmpty()) {
                 currentPlayer = players.get(playerIndex % numberOfPlayers);
                 if(card.number == Data.DRAW_TWO) activity.drawExtra(currentPlayer, 2);
@@ -77,6 +80,7 @@ public class Game {
         }else{
             currentPlayer = players.get(playerIndex % numberOfPlayers);
             if (card.number == Data.WILD_DRAW_FOUR) activity.drawExtra(currentPlayer, 4);
+            activity.pickColor(thisPlayer);
         }
     }
 

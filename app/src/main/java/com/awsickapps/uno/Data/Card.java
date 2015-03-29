@@ -201,6 +201,16 @@ public class Card implements Comparable{
 
     @Override
     public int compareTo(Object another) {
-        return this.color.compareTo(((Card) another).color);
+        Card c = (Card) another;
+
+        if(c.color == this.color)
+            if(c.number > this.number)
+                return -1;
+            else if(c.number < this.number)
+                return 1;
+            else
+                return 0;
+        else
+            return this.color.compareTo(c.color);
     }
 }

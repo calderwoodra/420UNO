@@ -8,7 +8,7 @@ import com.awsickapps.uno.R;
 /**
  * Created by allen on 3/15/15.
  */
-public class Card {
+public class Card implements Comparable{
 
     public enum Color {red, blue, green, yellow, wild}
     public Color color;
@@ -197,5 +197,10 @@ public class Card {
             this.color = color;
         else
             throw new RuntimeException("Cannot change the color of that card!");
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        return this.color.compareTo(((Card) another).color);
     }
 }

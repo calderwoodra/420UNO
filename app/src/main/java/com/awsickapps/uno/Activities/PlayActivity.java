@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.awsickapps.uno.Data;
 import com.awsickapps.uno.DiscardHistoryAdapter;
@@ -51,6 +52,9 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
     int numOfDraws = 0;
     private static final int animationTime = 300;
+    private static final int aiTurnDuration = 1000;
+
+    private boolean unoCalled = false;
 
     Game game;
     RelativeLayout rlDiscard;
@@ -62,7 +66,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     HashMap<Player, TextView> textViewMap;
     LinearLayout llChooseColor, llDrawDiscard;
     public HashMap<Player, RecyclerView> rvMap; //rvHand
-    ImageView ivDraw, ivDiscard, ivDrawAnimation;
+    public ImageView ivDraw, ivDiscard, ivDrawAnimation;
     HashMap<Player, PlayerHandsAdapter> adapterMap; //adapter
     ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
     public RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
@@ -100,6 +104,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
         rlDiscard.setOnClickListener(this);
         ivDiscard.setOnClickListener(this);
+        ivDraw.setOnClickListener(this);
         bGreen.setOnClickListener(this);
         bBlue.setOnClickListener(this);
         bRed.setOnClickListener(this);
@@ -109,10 +114,42 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         engageTurn(game.currentPlayer, game.discard.getTop());
     }
     public void endTurn(){
-        Card discardTop = game.discard.getTop();
+        final Card discardTop = game.discard.getTop();
         ivDiscard.setImageResource(discardTop.getImageResource());
         setCurrentColor();
-        engageTurn(game.currentPlayer, discardTop);
+
+        Handler handler = new Handler();
+        if(game.currentPlayer.isAI) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    engageTurn(game.currentPlayer, discardTop);
+                }
+            }, aiTurnDuration);
+        }else{
+            engageTurn(game.currentPlayer, discardTop);
+        }
+
+        final Player p = game.currentPlayer;
+        if (p.hand.size() == 1 && !p.isAI) {
+            unoCalled = false;
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!unoCalled)
+                        drawExtra(game.currentPlayer, 2);
+                }
+            }, aiTurnDuration*3);
+        }
+
+        tvBottom.setBackgroundColor(Color.TRANSPARENT);
+        tvLeft.setBackgroundColor(Color.TRANSPARENT);
+        tvRight.setBackgroundColor(Color.TRANSPARENT);
+        tvTop.setBackgroundColor(Color.TRANSPARENT);
+
+        textViewMap.get(game.currentPlayer).setBackgroundColor(Color.BLACK);
+
     }
     public void pickColor(Player lastPlayer){
 
@@ -204,13 +241,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         }
     }
     private void engageTurn(Player player, Card discard){
-
-        tvBottom.setBackgroundColor(Color.TRANSPARENT);
-        tvLeft.setBackgroundColor(Color.TRANSPARENT);
-        tvRight.setBackgroundColor(Color.TRANSPARENT);
-        tvTop.setBackgroundColor(Color.TRANSPARENT);
-
-        textViewMap.get(game.currentPlayer).setBackgroundColor(Color.BLACK);
 
         int position;
         while((position = hasValidCard(discard, player.hand)) < 0)
@@ -348,6 +378,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             case R.id.rlDiscard:
                 rlDiscard.setVisibility(View.INVISIBLE);
                 //discardAdapter.reverseCards();
+                break;
+            case R.id.draw:
+                unoCalled = true;
+                Toast.makeText(this, "UNO CALLED!", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

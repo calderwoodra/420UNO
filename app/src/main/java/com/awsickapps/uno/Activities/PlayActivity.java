@@ -1,18 +1,14 @@
 package com.awsickapps.uno.activities;
 
-import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,12 +35,8 @@ import java.util.List;
  */
 /*
     TODO:
-        hide AI cards
-        build AI decisions
         flesh out menu/options screens
         create parallax cards in hands
-        create indicator for what the current color is
-        add delays and transitions between card placements
         create animation for shuffling the discard to the deck
         create uno button(will use the deck, give a 5 second delay to press it or they have to draw!)
  */
@@ -138,7 +130,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
                 @Override
                 public void run() {
                     if (!unoCalled)
-                        drawExtra(game.currentPlayer, 2);
+                        drawExtra(p, 2);
                 }
             }, aiTurnDuration*3);
         }

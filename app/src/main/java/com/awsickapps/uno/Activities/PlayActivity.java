@@ -2,6 +2,7 @@ package com.awsickapps.uno.activities;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -46,6 +47,8 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     private static final int animationTime = 300;
     private static final int aiTurnDuration = 1000;
 
+    private Context context;
+
     private boolean unoCalled = false;
 
     Game game;
@@ -72,6 +75,8 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         adapterMap = new HashMap<>();
         textViewMap= new HashMap<>();
         rvMap      = new HashMap<>();
+
+        context = this;
 
         rvLeft          = (RecyclerView) findViewById(R.id.left);
         rvRight         = (RecyclerView) findViewById(R.id.right);
@@ -110,9 +115,8 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         ivDiscard.setImageResource(discardTop.getImageResource());
         setCurrentColor();
 
-        Handler handler = new Handler();
         if(game.currentPlayer.isAI) {
-            handler.postDelayed(new Runnable() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     engageTurn(game.currentPlayer, discardTop);
@@ -122,19 +126,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             engageTurn(game.currentPlayer, discardTop);
         }
 
-        final Player p = game.currentPlayer;
-        if (p.hand.size() == 1 && !p.isAI) {
-            unoCalled = false;
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!unoCalled)
-                        drawExtra(p, 2);
-                }
-            }, aiTurnDuration*3);
-        }
-
         tvBottom.setBackgroundColor(Color.TRANSPARENT);
         tvLeft.setBackgroundColor(Color.TRANSPARENT);
         tvRight.setBackgroundColor(Color.TRANSPARENT);
@@ -142,6 +133,21 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
         textViewMap.get(game.currentPlayer).setBackgroundColor(Color.BLACK);
 
+    }
+    public void initiateUno(final Player player){
+        if (player.hand.size() == 1 && !player.isAI) {
+            unoCalled = false;
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!unoCalled) {
+                        drawExtra(player, 2);
+                        Toast.makeText(context, "Forgot to call Uno!!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, aiTurnDuration*3);
+        }
     }
     public void pickColor(Player lastPlayer){
 

@@ -68,6 +68,8 @@ public class Game {
         if(playerIndex < 0)
             playerIndex += numberOfPlayers;
 
+        if(currentPlayer.hand.size() == 1) activity.initiateUno(currentPlayer);
+
         //TODO: possibly improve this logic
         if(card.number < 13) { //if not wild
 
@@ -100,11 +102,6 @@ public class Game {
 
         }while(discard.getTop().color == Card.Color.wild);
     }
-
-    private void draw(int cards){
-
-    }
-
 
 }
 

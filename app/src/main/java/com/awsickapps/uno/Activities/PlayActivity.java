@@ -284,7 +284,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         if(game.currentPlayer.name.equals("Player 4")){
             int size = game.currentPlayer.hand.size();
             if(size < 8){
-                rvBottom.getLayoutParams().width = size * (int)getResources().getDimension(R.dimen.card_width);
+                rvBottom.getLayoutParams().width = 16 + size * (int)getResources().getDimension(R.dimen.card_width);
             }else{
                 rvBottom.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
             }

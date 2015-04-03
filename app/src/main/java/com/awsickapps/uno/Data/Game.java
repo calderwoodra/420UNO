@@ -70,6 +70,8 @@ public class Game {
 
         if(currentPlayer.hand.size() == 1) activity.initiateUno(currentPlayer);
 
+        activity.updateHandSize();
+
         //TODO: possibly improve this logic
         if(card.number < 13) { //if not wild
 

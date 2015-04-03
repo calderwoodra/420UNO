@@ -26,6 +26,8 @@ import com.awsickapps.uno.data.Card;
 import com.awsickapps.uno.data.Game;
 import com.awsickapps.uno.data.Player;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,15 +55,15 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     Game game;
     RelativeLayout rlDiscard;
     TextView tvTop, tvBottom, tvLeft, tvRight;
+    TextView tvTopScore, tvLeftScore, tvRightScore, tvBottomScore;
     RelativeLayout rlGameBoard;
-    //VerticalTextView tvLeft, tvRight;
     Button bGreen, bRed, bYellow, bBlue, bUno;
     DiscardHistoryAdapter discardAdapter;
     HashMap<Player, TextView> textViewMap;
     LinearLayout llChooseColor, llDrawDiscard;
-    public HashMap<Player, RecyclerView> rvMap; //rvHand
-    public ImageView ivDraw, ivDiscard, ivDrawAnimation;
-    HashMap<Player, PlayerHandsAdapter> adapterMap; //adapter
+    public HashMap<Player, RecyclerView> rvMap;
+    public ImageView ivDraw, ivDiscard;
+    HashMap<Player, PlayerHandsAdapter> adapterMap;
     ArrayList<Card> leftHand, topHand, rightHand, bottomHand;
     public RecyclerView rvLeft, rvRight, rvTop, rvBottom, rvDiscard;
     PlayerHandsAdapter leftAdapter, rightAdapter, topAdapter, bottomAdapter;
@@ -70,8 +72,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play);
-
-
 
         adapterMap = new HashMap<>();
         textViewMap= new HashMap<>();
@@ -95,6 +95,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         tvRight         = (TextView) findViewById(R.id.tvRight);
         tvBottom        = (TextView) findViewById(R.id.tvBottom);
         tvTop           = (TextView) findViewById(R.id.tvTop);
+        tvBottomScore   = (TextView) findViewById(R.id.tvBottomScore);
+        tvRightScore    = (TextView) findViewById(R.id.tvRightScore);
+        tvLeftScore     = (TextView) findViewById(R.id.tvLeftScore);
+        tvTopScore      = (TextView) findViewById(R.id.tvTopScore);
         rlDiscard       = (RelativeLayout) findViewById(R.id.rlDiscard);
         rlGameBoard     = (RelativeLayout) findViewById(R.id.rlGameBoard);
         llChooseColor   = (LinearLayout) findViewById(R.id.llChoseColor);
@@ -144,7 +148,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
         RecyclerView rv = rvMap.get(game.currentPlayer);
         rv.setBackgroundResource(R.drawable.border);
-
+        updateHandSize();
+    }
+    public void updateHandSize(){
+        textViewMap.get(game.currentPlayer).setText("" + game.currentPlayer.hand.size());
     }
     public void initiateUno(final Player player){
         if (player.hand.size() == 1 && !player.isAI) {
@@ -170,9 +177,19 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     }
     public void endGame(Player player){
 
+        int score = 0;
+        for(Player p : game.players){
+            for(Card c : p.hand){
+                score += c.getValue();
+            }
+        }
+
+        Data.addHighScore(this, score);
+
         Intent intent = new Intent(this, EndGameActivity.class);
         intent.putExtra(Data.WINNING_SCREEN_KEY, true);
         intent.putExtra(Data.WINNER_NAME_KEY, player.name);
+        intent.putExtra(Data.HIGH_SCORES_KEY, score);
         startActivityForResult(intent, Data.WIN_REQUEST_CODE);
     }
     public void drawExtra(Player player, int draw){
@@ -227,10 +244,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         rvMap.put(game.players.get(2), rvTop);
         rvMap.put(game.players.get(3), rvRight);
 
-        textViewMap.put(game.players.get(0), tvBottom);
-        textViewMap.put(game.players.get(1), tvLeft);
-        textViewMap.put(game.players.get(2), tvTop);
-        textViewMap.put(game.players.get(3), tvRight);
+        textViewMap.put(game.players.get(0), tvBottomScore);
+        textViewMap.put(game.players.get(1), tvLeftScore);
+        textViewMap.put(game.players.get(2), tvTopScore);
+        textViewMap.put(game.players.get(3), tvRightScore);
+
 
         rvLeft.setAdapter(leftAdapter);
         rvRight.setAdapter(rightAdapter);

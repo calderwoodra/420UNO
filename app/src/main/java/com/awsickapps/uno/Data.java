@@ -1,5 +1,8 @@
 package com.awsickapps.uno;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 /**
  * Created by allen on 3/19/15.
  */
@@ -20,11 +23,20 @@ public class Data {
     public static final int WILD_DRAW_FOUR = 14;
 
     public static final String HIGH_SCORES_KEY = "high_scores_key";
-    public static final String P1_SCORE_KEY = "player_1_score_key";
-    public static final String P2_SCORE_KEY = "player_2_score_key";
-    public static final String P3_SCORE_KEY = "player_3_score_key";
-    public static final String P4_SCORE_KEY = "player_4_score_key";
 
-    
+    public static String getHighScores(Context context){
+        SharedPreferences sp = context.getSharedPreferences(HIGH_SCORES_KEY, Context.MODE_PRIVATE);
+        return sp.getString(HIGH_SCORES_KEY, "");
+    }
+
+    public static void addHighScore(Context context, int score){
+        SharedPreferences sp = context.getSharedPreferences(HIGH_SCORES_KEY, Context.MODE_PRIVATE);
+        String hs = sp.getString(HIGH_SCORES_KEY, "");
+        if (hs.equals(""))
+            sp.edit().putString(HIGH_SCORES_KEY, "" + score).apply();
+        else
+            sp.edit().putString(HIGH_SCORES_KEY, hs + "," + score).apply();
+
+    }
 
 }

@@ -85,7 +85,6 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/left"
-                android:background="#000000"
                 android:layout_width="@dimen/hand_width"
                 android:layout_height="@dimen/card_height"/>
 
@@ -160,6 +159,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/bottom"
+                android:background="@drawable/border"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/card_height"/>
         </LinearLayout>

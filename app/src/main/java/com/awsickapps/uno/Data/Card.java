@@ -199,6 +199,13 @@ public class Card implements Comparable{
             throw new RuntimeException("Cannot change the color of that card!");
     }
 
+    public int getValue(){
+        if(number < 10)
+            return number;
+        else
+            return 25;
+    }
+
     @Override
     public int compareTo(Object another) {
         Card c = (Card) another;

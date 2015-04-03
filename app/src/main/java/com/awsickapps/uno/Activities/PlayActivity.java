@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -120,7 +121,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         final Card discardTop = game.discard.getTop();
         ivDiscard.setImageResource(discardTop.getImageResource());
         setCurrentColor();
-
+        adjustHandSize();
         if(game.currentPlayer.isAI) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -274,10 +275,20 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         while((position = hasValidCard(discard, player.hand)) < 0)
             drawCard(player.hand, adapterMap.get(player), rvMap.get(player));
 
-        boolean isWild = player.hand.get(position).number >= 13;
+        adjustHandSize();
 
         if (player.isAI)
             adapterMap.get(game.currentPlayer).playCard(position);
+    }
+    public void adjustHandSize(){
+        if(game.currentPlayer.name.equals("Player 4")){
+            int size = game.currentPlayer.hand.size();
+            if(size < 8){
+                rvBottom.getLayoutParams().width = size * (int)getResources().getDimension(R.dimen.card_width);
+            }else{
+                rvBottom.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+        }
     }
     private Card.Color getMaxColor(ArrayList<Card> hand){
 

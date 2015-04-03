@@ -65,9 +65,9 @@ public class EndGameActivity extends Activity {
     }
 
     private void confirmExit(){
-        tvDeatils.setText("Would you like to restart the game?");
-        button1.setText("No");
-        button2.setText("Yes");
+        tvDeatils.setText("");
+        button1.setText("Exit Game");
+        button2.setText("Restart Game");
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +80,7 @@ public class EndGameActivity extends Activity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(Data.QUIT_RESULT_CODE);
                 finish();
             }
         });

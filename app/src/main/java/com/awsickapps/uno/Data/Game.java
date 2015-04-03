@@ -71,6 +71,7 @@ public class Game {
         if(currentPlayer.hand.size() == 1) activity.initiateUno(currentPlayer);
 
         activity.updateHandSize();
+        activity.adjustHandSize();
 
         //TODO: possibly improve this logic
         if(card.number < 13) { //if not wild
@@ -89,7 +90,7 @@ public class Game {
     }
 
     public void refillDrawPile(){
-        Toast.makeText(activity, "**************reshuffle applied!********", Toast.LENGTH_LONG).show();
+        //Toast.makeText(activity, "**************reshuffle applied!********", Toast.LENGTH_LONG).show();
         draw = discard;
         draw.isDraw = true;
         discard = new Pile(false);

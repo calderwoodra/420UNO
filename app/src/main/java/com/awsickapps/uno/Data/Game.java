@@ -29,9 +29,9 @@ public class Game {
         discard = new Pile(false);
         players = new ArrayList<>();
         players.add(new Player(name, false));
-        players.add(new Player("AI 1", true));
-        players.add(new Player("AI 2", true));
-        players.add(new Player("AI 3", true));
+        players.add(new Player("Player 1", true));
+        players.add(new Player("Player 2", true));
+        players.add(new Player("Player 3", true));
         numberOfPlayers = players.size();
         playerIndex = 0;
         currentPlayer = players.get(playerIndex);

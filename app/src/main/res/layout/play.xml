@@ -5,60 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Player Names -->
-    <com.awsickapps.uno.VerticalTextView
-        android:text="allen calderwood"
-        android:id="@+id/tvLeft"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/text_size"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="@dimen/textview_padding"
-        android:layout_marginStart="@dimen/textview_padding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="allen calderwood"
-        android:id="@+id/tvTop"
-        android:textColor="#FFFFFF"
-        android:gravity="top"
-        android:rotation="180"
-        android:textSize="@dimen/text_size"
-        android:layout_marginTop="@dimen/textview_padding"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <com.awsickapps.uno.VerticalTextView
-        android:text="allen calderwood"
-        android:id="@+id/tvRight"
-        android:textColor="#FFFFFF"
-        android:gravity="bottom"
-        android:textSize="@dimen/text_size"
-        android:layout_marginEnd="@dimen/textview_padding"
-        android:layout_marginRight="@dimen/textview_padding"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="allen calderwood"
-        android:id="@+id/tvBottom"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/text_size"
-        android:layout_marginBottom="@dimen/textview_padding"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <!-- Game Board -->
     <RelativeLayout
-        android:padding="@dimen/general_padding"
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/bUno"
+            android:text="Call Uno!"
+            android:layout_marginTop="@dimen/general_padding"
+            android:layout_marginStart="@dimen/general_padding"
+            android:layout_marginLeft="@dimen/general_padding"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="wrap_content" />
 
         <!-- draw/discard-->
         <LinearLayout
@@ -86,43 +49,164 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/drawAnimation"
-            android:src="@drawable/uno_back"
-            android:layout_marginRight="@dimen/general_padding"
-            android:layout_alignTop="@+id/llDrawDiscard"
-            android:layout_alignLeft="@+id/llDrawDiscard"
-            android:layout_alignStart="@+id/llDrawDiscard"
-            android:layout_width="@dimen/card_width"
-            android:layout_height="@dimen/card_height" />
-
-        <!-- Various player hands -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/left"
+        <!--Left Player-->
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_width="@dimen/hand_width"
-            android:layout_height="@dimen/card_height"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/right"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="@dimen/hand_width"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="allen calderwood"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/tvLeft"
+                    android:background="#000000"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvLeftScore"
+                    android:text="7"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="@dimen/text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/left"
+                android:background="#000000"
+                android:layout_width="@dimen/hand_width"
+                android:layout_height="@dimen/card_height"/>
+
+        </LinearLayout>
+
+        <!--Top Player-->
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/hand_width"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="allen calderwood"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/tvTop"
+                    android:textColor="#FFFFFF"
+                    android:background="#000000"
+                    android:textSize="@dimen/text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvTopScore"
+                    android:text="7"
+                    android:textSize="@dimen/text_size"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/top"
+                android:layout_width="@dimen/hand_width"
+                android:layout_height="@dimen/card_height"/>
+        </LinearLayout>
+
+        <!--Bottom Player-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="allen calderwood"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/tvBottom"
+                    android:textColor="#FFFFFF"
+                    android:background="#000000"
+                    android:textSize="@dimen/text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvBottomScore"
+                    android:text="7"
+                    android:textSize="@dimen/text_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/card_height"/>
+        </LinearLayout>
+
+        <!--Right Player-->
+        <LinearLayout
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:layout_width="@dimen/hand_width"
-            android:layout_height="@dimen/card_height"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/top"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:layout_width="@dimen/hand_width"
-            android:layout_height="@dimen/card_height"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/bottom"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_width="@dimen/hand_width"
-            android:layout_height="@dimen/card_height"/>
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="@dimen/hand_width"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvRight"
+                    android:text="allen calderwood"
+                    android:textColor="#FFFFFF"
+                    android:background="#000000"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvRightScore"
+                    android:text="7"
+                    android:textSize="@dimen/text_size"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/right"
+                android:layout_width="@dimen/hand_width"
+                android:layout_height="@dimen/card_height"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

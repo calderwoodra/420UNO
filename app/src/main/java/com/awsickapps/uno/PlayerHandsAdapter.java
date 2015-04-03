@@ -82,7 +82,6 @@ public class PlayerHandsAdapter extends RecyclerView.Adapter<PlayerHandsAdapter.
     }
 
     public void playCard(int i){
-        //Toast.makeText(context, "Cards matched", Toast.LENGTH_SHORT).show();
         Log.d("playCard", "Color: " + cards.get(i).color + "\t\tnumber: " + cards.get(i).number + "\tplayer: " + game.currentPlayer.name);
         game.discardCard(cards.remove(i), i);
         notifyDataSetChanged();

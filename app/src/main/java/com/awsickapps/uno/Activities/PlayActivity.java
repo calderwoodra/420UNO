@@ -39,13 +39,12 @@ import java.util.List;
         flesh out menu/options screens
         create parallax cards in hands
         create animation for shuffling the discard to the deck
-        create uno button(will use the deck, give a 5 second delay to press it or they have to draw!)
  */
 public class PlayActivity extends Activity implements View.OnClickListener{
 
     int numOfDraws = 0;
     private static final int animationTime = 300;
-    private static final int aiTurnDuration = 1000;
+    private static final int aiTurnDuration = 1250;
 
     private Context context;
 
@@ -53,10 +52,10 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
     Game game;
     RelativeLayout rlDiscard;
-    TextView tvTop, tvBottom;
+    TextView tvTop, tvBottom, tvLeft, tvRight;
     RelativeLayout rlGameBoard;
-    VerticalTextView tvLeft, tvRight;
-    Button bGreen, bRed, bYellow, bBlue;
+    //VerticalTextView tvLeft, tvRight;
+    Button bGreen, bRed, bYellow, bBlue, bUno;
     DiscardHistoryAdapter discardAdapter;
     HashMap<Player, TextView> textViewMap;
     LinearLayout llChooseColor, llDrawDiscard;
@@ -72,6 +71,8 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play);
 
+
+
         adapterMap = new HashMap<>();
         textViewMap= new HashMap<>();
         rvMap      = new HashMap<>();
@@ -85,13 +86,13 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         rvDiscard       = (RecyclerView) findViewById(R.id.discardHistoryList);
         ivDraw          = (ImageView) findViewById(R.id.draw);
         ivDiscard       = (ImageView) findViewById(R.id.discard);
-        ivDrawAnimation = (ImageView) findViewById(R.id.drawAnimation);
         bGreen          = (Button) findViewById(R.id.bGreen);
         bBlue           = (Button) findViewById(R.id.bBlue);
         bYellow         = (Button) findViewById(R.id.bYellow);
         bRed            = (Button) findViewById(R.id.bRed);
-        tvLeft          = (VerticalTextView) findViewById(R.id.tvLeft);
-        tvRight         = (VerticalTextView) findViewById(R.id.tvRight);
+        bUno            = (Button) findViewById(R.id.bUno);
+        tvLeft          = (TextView) findViewById(R.id.tvLeft);
+        tvRight         = (TextView) findViewById(R.id.tvRight);
         tvBottom        = (TextView) findViewById(R.id.tvBottom);
         tvTop           = (TextView) findViewById(R.id.tvTop);
         rlDiscard       = (RelativeLayout) findViewById(R.id.rlDiscard);
@@ -106,6 +107,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         bBlue.setOnClickListener(this);
         bRed.setOnClickListener(this);
         bYellow.setOnClickListener(this);
+        bUno.setOnClickListener(this);
 
         setupGame();
         engageTurn(game.currentPlayer, game.discard.getTop());
@@ -126,12 +128,22 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             engageTurn(game.currentPlayer, discardTop);
         }
 
-        tvBottom.setBackgroundColor(Color.TRANSPARENT);
-        tvLeft.setBackgroundColor(Color.TRANSPARENT);
-        tvRight.setBackgroundColor(Color.TRANSPARENT);
-        tvTop.setBackgroundColor(Color.TRANSPARENT);
+        //tvBottom.setVisibility(View.INVISIBLE);//.setBackgroundColor(Color.TRANSPARENT);
+        //tvLeft.setVisibility(View.INVISIBLE);//.setBackgroundColor(Color.TRANSPARENT);
+        //tvRight.setVisibility(View.INVISIBLE);//.setBackgroundColor(Color.TRANSPARENT);
+        //tvTop.setVisibility(View.INVISIBLE);//.setBackgroundColor(Color.TRANSPARENT);
 
-        textViewMap.get(game.currentPlayer).setBackgroundColor(Color.BLACK);
+        //TextView tv = textViewMap.get(game.currentPlayer);
+        //tv.setVisibility(View.VISIBLE);//.setBackgroundColor(Color.BLACK);
+        //tv.setText(game.currentPlayer.name + ", " + game.currentPlayer.hand.size() + " cards remaining");
+
+        rvLeft.setBackgroundColor(Color.TRANSPARENT);
+        rvBottom.setBackgroundColor(Color.TRANSPARENT);
+        rvTop.setBackgroundColor(Color.TRANSPARENT);
+        rvRight.setBackgroundColor(Color.TRANSPARENT);
+
+        RecyclerView rv = rvMap.get(game.currentPlayer);
+        rv.setBackgroundResource(R.drawable.border);
 
     }
     public void initiateUno(final Player player){
@@ -184,7 +196,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
     //TODO: redo to accommadate 4+ players
     private void setupGame(){
-        game = new Game("Player 1", this);
+        game = new Game("Player 4", this);
         ivDiscard.setImageResource(game.discard.getTop().getImageResource());
         setCurrentColor();
         ivDiscard.setVisibility(View.VISIBLE);
@@ -325,23 +337,6 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         }
 
     }
-    private void drawCardAnimation(){
-
-        ValueAnimator va = new ValueAnimator();
-        va.setRepeatCount(3);
-
-        ivDrawAnimation.animate()
-                .translationX(rvLeft.getX())
-                .translationY(rvLeft.getY())
-                .setDuration(animationTime)
-                .setStartDelay(animationTime * numOfDraws);
-
-//        ivDrawAnimation.animate()
-//                .translationX(ivDraw.getX())
-//                .translationY(ivDraw.getY())
-//                .setDuration(0)
-//                .setStartDelay(animationTime * (numOfDraws + 1));
-    }
 
     @Override
     public void onBackPressed() {
@@ -377,7 +372,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
                 rlDiscard.setVisibility(View.INVISIBLE);
                 //discardAdapter.reverseCards();
                 break;
-            case R.id.draw:
+            case R.id.bUno:
                 unoCalled = true;
                 Toast.makeText(this, "UNO CALLED!", Toast.LENGTH_SHORT).show();
                 break;
@@ -386,10 +381,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Data.QUIT_REQUEST_CODE){
-            if(data.getBooleanExtra(Data.QUIT_KEY, false))
-                finish();
-        }else if(requestCode == Data.WIN_REQUEST_CODE){
+        if(resultCode == Data.RESTART_RESULT_CODE){
+            Intent intent = new Intent(this, PlayActivity.class);
+            startActivity(intent);
+            finish();
+        }else if(resultCode == Data.QUIT_RESULT_CODE){
             finish();
         }
     }

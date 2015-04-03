@@ -44,31 +44,35 @@ public class EndGameActivity extends Activity {
 
     private void winGame(){
         tvDeatils.setText(intent.getStringExtra(Data.WINNER_NAME_KEY) + " wins!!!");
-        button1.setText("Congratulations!!");
-        button2.setVisibility(View.GONE);
+        button1.setText("Play again");
+        button2.setText("Exit Game");
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(Data.QUIT_KEY, true);
-                setResult(0, returnIntent);
+                setResult(Data.RESTART_RESULT_CODE);
+                finish();
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(Data.QUIT_RESULT_CODE);
                 finish();
             }
         });
     }
 
     private void confirmExit(){
-        tvDeatils.setText("Would you like to end the game?");
-        button1.setText("Yes");
-        button2.setText("No");
+        tvDeatils.setText("Would you like to restart the game?");
+        button1.setText("No");
+        button2.setText("Yes");
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(Data.QUIT_KEY, false);
-                setResult(0, returnIntent);
+                setResult(Data.RESTART_RESULT_CODE);
                 finish();
             }
         });
@@ -76,9 +80,6 @@ public class EndGameActivity extends Activity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(Data.QUIT_KEY, true);
-                setResult(0, returnIntent);
                 finish();
             }
         });

@@ -13,7 +13,7 @@ import com.awsickapps.uno.R;
 
 public class MenuActivity extends ActionBarActivity implements View.OnClickListener{
 
-    Button bPlay, bOptions;
+    Button bPlay, bOptions, bHighScores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +22,10 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
 
         bOptions = (Button) findViewById(R.id.bOptions);
         bPlay = (Button) findViewById(R.id.bPlay);
+        bHighScores = (Button) findViewById(R.id.bHighScores);
         bOptions.setOnClickListener(this);
         bPlay.setOnClickListener(this);
+        bHighScores.setOnClickListener(this);
 
     }
 
@@ -59,6 +61,9 @@ public class MenuActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bPlay:
                 this.startActivity(this, PlayActivity.class);
+                break;
+            case R.id.bHighScores:
+                this.startActivity(this, HighScoresActivity.class);
                 break;
         }
     }

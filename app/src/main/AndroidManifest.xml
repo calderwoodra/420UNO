@@ -24,6 +24,10 @@
             android:label="@string/app_name"/>
 
         <activity
+            android:name=".activities.HighScoresActivity"
+            android:label="@string/app_name"/>
+
+        <activity
             android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
             android:name=".activities.EndGameActivity"
             android:label="@string/app_name"/>

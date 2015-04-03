@@ -16,7 +16,13 @@
 
     <Button
         android:id="@+id/bOptions"
-        android:text="options"
+        android:text="Options"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bHighScores"
+        android:text="High Scores"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

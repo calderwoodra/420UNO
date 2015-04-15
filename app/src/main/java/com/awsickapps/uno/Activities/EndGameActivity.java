@@ -19,6 +19,8 @@ public class EndGameActivity extends Activity {
     TextView tvDeatils;
     Button button1, button2;
     Intent intent;
+    boolean confirming = false;
+    boolean restart = false;
 
     /*
         this activity will be used for 2 screens:
@@ -72,16 +74,36 @@ public class EndGameActivity extends Activity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(Data.RESTART_RESULT_CODE);
-                finish();
+                if(!confirming){
+                    tvDeatils.setText("Are you sure?");
+                    button1.setText("Yes");
+                    button2.setText("No");
+                    confirming = true;
+                    restart = true;
+                }else{
+                    finish();
+                }
             }
         });
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(Data.QUIT_RESULT_CODE);
-                finish();
+                if(!confirming){
+                    tvDeatils.setText("Are you sure?");
+                    button1.setText("Yes");
+                    button2.setText("No");
+                    confirming = true;
+                    restart = false;
+
+                }else {
+                    if(restart)
+                        setResult(Data.RESTART_RESULT_CODE);
+                    else
+                        setResult(Data.QUIT_RESULT_CODE);
+
+                    finish();
+                }
             }
         });
 

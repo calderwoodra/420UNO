@@ -1,6 +1,5 @@
 package com.awsickapps.uno.activities;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,14 +21,13 @@ import com.awsickapps.uno.Data;
 import com.awsickapps.uno.DiscardHistoryAdapter;
 import com.awsickapps.uno.PlayerHandsAdapter;
 import com.awsickapps.uno.R;
-import com.awsickapps.uno.VerticalTextView;
 import com.awsickapps.uno.data.Card;
 import com.awsickapps.uno.data.Game;
+import com.awsickapps.uno.data.GameScores;
 import com.awsickapps.uno.data.Player;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,11 +52,11 @@ public class PlayActivity extends Activity implements View.OnClickListener{
     private boolean unoCalled = false;
 
     Game game;
-    RelativeLayout rlDiscard;
+    RelativeLayout rlDiscard, rlScores;
     TextView tvTop, tvBottom, tvLeft, tvRight;
-    TextView tvTopScore, tvLeftScore, tvRightScore, tvBottomScore;
+    TextView tvTopScore, tvLeftScore, tvRightScore, tvBottomScore, tvScores;
     RelativeLayout rlGameBoard;
-    Button bGreen, bRed, bYellow, bBlue, bUno;
+    Button bGreen, bRed, bYellow, bBlue, bUno, bScores;
     DiscardHistoryAdapter discardAdapter;
     HashMap<Player, TextView> textViewMap;
     LinearLayout llChooseColor, llDrawDiscard;
@@ -92,6 +90,7 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         bYellow         = (Button) findViewById(R.id.bYellow);
         bRed            = (Button) findViewById(R.id.bRed);
         bUno            = (Button) findViewById(R.id.bUno);
+        bScores         = (Button) findViewById(R.id.bScores);
         tvLeft          = (TextView) findViewById(R.id.tvLeft);
         tvRight         = (TextView) findViewById(R.id.tvRight);
         tvBottom        = (TextView) findViewById(R.id.tvBottom);
@@ -100,19 +99,23 @@ public class PlayActivity extends Activity implements View.OnClickListener{
         tvRightScore    = (TextView) findViewById(R.id.tvRightScore);
         tvLeftScore     = (TextView) findViewById(R.id.tvLeftScore);
         tvTopScore      = (TextView) findViewById(R.id.tvTopScore);
+        tvScores        = (TextView) findViewById(R.id.tvScores);
         rlDiscard       = (RelativeLayout) findViewById(R.id.rlDiscard);
         rlGameBoard     = (RelativeLayout) findViewById(R.id.rlGameBoard);
+        rlScores        = (RelativeLayout) findViewById(R.id.rlScore);
         llChooseColor   = (LinearLayout) findViewById(R.id.llChoseColor);
         llDrawDiscard   = (LinearLayout) findViewById(R.id.llDrawDiscard);
 
         rlDiscard.setOnClickListener(this);
         ivDiscard.setOnClickListener(this);
+        rlScores.setOnClickListener(this);
         ivDraw.setOnClickListener(this);
         bGreen.setOnClickListener(this);
         bBlue.setOnClickListener(this);
         bRed.setOnClickListener(this);
         bYellow.setOnClickListener(this);
         bUno.setOnClickListener(this);
+        bScores.setOnClickListener(this);
 
         setupGame();
         engageTurn(game.currentPlayer, game.discard.getTop());
@@ -185,13 +188,27 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             }
         }
 
-        Data.addHighScore(this, score);
-
-        Intent intent = new Intent(this, EndGameActivity.class);
-        intent.putExtra(Data.WINNING_SCREEN_KEY, true);
-        intent.putExtra(Data.WINNER_NAME_KEY, player.name);
-        intent.putExtra(Data.HIGH_SCORES_KEY, score);
-        startActivityForResult(intent, Data.WIN_REQUEST_CODE);
+        int result = Data.setScore(Integer.parseInt("" + player.name.charAt(player.name.length() - 1)), score );
+        if(result != -1){
+            rlScores.setVisibility(View.VISIBLE);
+            setupScoreView(tvScores);
+            Toast.makeText(this, "Player " + result + " is the GRAND WINNER!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Player " + result + " is the GRAND WINNER!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Player " + result + " is the GRAND WINNER!!!", Toast.LENGTH_LONG).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Data.gameScores = Collections.emptyList();
+                    finish();
+                }
+            }, 10000);
+        }else {
+            Intent intent = new Intent(this, EndGameActivity.class);
+            intent.putExtra(Data.WINNING_SCREEN_KEY, true);
+            intent.putExtra(Data.WINNER_NAME_KEY, player.name);
+            intent.putExtra(Data.HIGH_SCORES_KEY, score);
+            startActivityForResult(intent, Data.WIN_REQUEST_CODE);
+        }
     }
     public void drawExtra(Player player, int draw){
         for (int i = 0; i < draw; i++)
@@ -367,6 +384,21 @@ public class PlayActivity extends Activity implements View.OnClickListener{
 
     }
 
+    private void setupScoreView(TextView tvScores){
+        int[] totals = Data.getTotals();
+        String text = "History: \n";
+        for(GameScores gs : Data.gameScores)
+            text += "Player " + gs.winningPlayer + "'s Score: " + gs.scoreEarner + "\n";
+
+        text += "\n\ntotals: \n";
+        text += "Player 1 total: " + totals[0] + "\n";
+        text += "Player 2 total: " + totals[1] + "\n";
+        text += "Player 3 total: " + totals[2] + "\n";
+        text += "Player 4 total: " + totals[3];
+
+        tvScores.setText(text);
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, EndGameActivity.class);
@@ -404,6 +436,13 @@ public class PlayActivity extends Activity implements View.OnClickListener{
             case R.id.bUno:
                 unoCalled = true;
                 Toast.makeText(this, "UNO CALLED!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.bScores:
+                rlScores.setVisibility(View.VISIBLE);
+                setupScoreView(tvScores);
+                break;
+            case R.id.rlScore:
+                rlScores.setVisibility(View.GONE);
                 break;
         }
     }

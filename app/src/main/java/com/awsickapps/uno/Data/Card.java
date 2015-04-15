@@ -200,6 +200,7 @@ public class Card implements Comparable{
     }
 
     public int getValue(){
+
         if(number < 10)
             return number;
         else
